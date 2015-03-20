@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Restaurant Database</title>
+        <h:outputStylesheet name="./css/default.css"/>
+        <meta name="CanJee" content="Can Jee"></meta>
+    </h:head>
+    <h:body style="padding: 60px; background-color: rgb(170, 221, 221);">
+        <b:navBar brand="Restaurant Database" brandHref="#" fixed="top" inverse="true">
+            <b:navbarLinks>
+                <b:navLink value="Home" outcome="/index"/>
+                <c:if test="#{sessionBean.owner}" >
+                    <b:navLink value="Add Location" outcome="/owner/add_location"/>
+                </c:if>
+            </b:navbarLinks>
+            <b:navbarLinks pull="right">
+                <c:if test="#{!sessionBean.loggedIn}">
+                    <b:navLink value="Sign In" outcome="/login"></b:navLink>
+                    <b:navLink value="Create Account" outcome="/create_account"></b:navLink>
+                </c:if>
+                <c:if test="#{sessionBean.loggedIn}">
+                    <h:form>
+                        <h:commandButton id="logoutBtn" value="Log Out" type="command"  class="btn btn-default" actionListener="#{loginBean.logout}">
+                        </h:commandButton>
+                    </h:form>
+                </c:if>
+            </b:navbarLinks>
+        </b:navBar>
+        <b:container>
+            <b:jumbotron id="main">
+                <div id="content" class="center_content">
+                    <ui:insert name="content"></ui:insert>
+                </div>
+            </b:jumbotron>
+        </b:container>
+
+    </h:body>
+</html>

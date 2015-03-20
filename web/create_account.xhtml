@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+        <title>Restaurant DB Create Account</title>
+        <meta name="CanJee" content="Can Jee"></meta>
+    </h:head>
+    <h:body style="padding-top: 60px;">
+        <ui:composition template="./template.xhtml">
+
+        <ui:define name="content">
+        <b:container>
+            <h:form styleClass="form-signin" prependId="false">
+                <h2>Please sign in</h2>
+                <b:alert severity="danger" rendered="#{createAccountBean.isError}"><b:iconAwesome name="warning" />
+                    #{createAccountBean.status}
+                </b:alert>
+                <b:inputText id="first" placeholder="First Name" required="true" requiredMessage="Value is required" value="#{createAccountBean.firstname}"/>
+                <h:message id="firstMsg" style="color: red" for="first" />
+                <b:inputText id="last" placeholder="Last Name" required="true" requiredMessage="Value is required" value="#{createAccountBean.lastname}"/>
+                <h:message id="lastMsg" style="color: red" for="last" />
+                <b:inputText id="email" placeholder="Email" required="true" requiredMessage="Value is required" value="#{createAccountBean.email}">
+                </b:inputText>
+                <h:message id="emailMsg" style="color: red" for="email" />
+                <b:inputText id="username" placeholder="Username" required="true" requiredMessage="Value is required" 
+                             validatorMessage="Please enter only letters and numbers in the username field." value="#{createAccountBean.username}">
+                    <f:validateRegex pattern="^[a-zA-Z0-9]*$" />
+                </b:inputText>
+                <h:message id="usernameMsg" style="color: red" for="username" />
+                <b:inputSecret id="password" placeholder="Password" type="password" required="true" requiredMessage="Value is required" value="#{createAccountBean.password}"/>
+                <h:message id="passwordMsg" style="color: red" for="password" />
+                <b:selectOneMenu id="types" label="Account Type" required="true" requiredMessage="Value is required." value="#{createAccountBean.type}">
+                    <f:selectItem id="Owner" itemValue="owner" itemLabel="Owner &amp; Rater"/>
+                    <f:selectItem id="Rater" itemValue="rater" itemLabel="Rater Only"/>
+                </b:selectOneMenu>
+                <h:message id="typesMsg" style="color: red" for="types" />
+                <b:selectOneMenu id="rtypes" label="Rater Type" required="true" requiredMessage="Value is required." value="#{createAccountBean.rtype}">
+                    <f:selectItem id="Blog" itemValue="blog" itemLabel="Blog"/>
+                    <f:selectItem id="Online" itemValue="online" itemLabel="Online"/>
+                    <f:selectItem id="Critic" itemValue="critic" itemLabel="Critic"/>
+                </b:selectOneMenu>
+                <h:message id="rtypesMsg" style="color: red" for="rtypes" />
+                <b:commandButton look="primary btn-block" value="Create Account" iconAwesome="sign-in" size="lg" actionListener="#{createAccountBean.createAccount}">
+                    <f:ajax execute="first last email username password types rtypes" 
+                            render="status firstMsg lastMsg emailMsg userMsg passwordMsg typesMsg rtypesMsg" />
+                </b:commandButton>
+            </h:form>
+        </b:container>
+        </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

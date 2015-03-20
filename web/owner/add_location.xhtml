@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <h:head>
+        <title>Restaurant DB Add Location</title>
+        <meta name="CanJee" content="Can Jee"></meta>
+    </h:head>
+    <h:body>
+
+        <ui:composition template="./../template.xhtml">
+
+            <ui:define name="content">
+            <b:container>
+                <h:form styleClass="form-signin" prependId="false">
+                    <h2>Please enter the restaurant and location details</h2>
+                    <b:alert severity="danger" rendered="#{addLocationBean.isError}"><b:iconAwesome name="warning" />
+                        #{addLocationBean.status}
+                    </b:alert>
+                    <b:selectOneMenu id="restaurants" value="#{addLocationBean.restaurantName}">
+                        <f:selectItems value="#{viewRestaurantBean.restaurantNames}"/>
+                    </b:selectOneMenu>
+                    <b:inputText id="streetaddress" placeholder="Street Address" required="true" requiredMessage="Value is required" value="#{addLocationBean.streetaddress}"/>
+                    <h:message id="streetaddressMsg" style="color: red" for="streetaddress" />
+                    <b:inputText id="city" placeholder="City" required="true" requiredMessage="Value is required" value="#{addLocationBean.city}"/>
+                    <h:message id="cityMsg" style="color: red" for="city" />
+                    <h:outputLabel value="Province:" for="province" />
+                    <b:selectOneMenu id="province" required="true" requiredMessage="Value is required." value="#{addLocationBean.province}">
+                        <f:selectItem id="AB" itemValue="AB" itemLabel="AB"/>
+                        <f:selectItem id="BC" itemValue="BC" itemLabel="BC"/>
+                        <f:selectItem id="MB" itemValue="MB" itemLabel="MB"/>
+                        <f:selectItem id="NB" itemValue="NB" itemLabel="NB"/>
+                        <f:selectItem id="NL" itemValue="NL" itemLabel="NL"/>
+                        <f:selectItem id="NS" itemValue="NS" itemLabel="NS"/>
+                        <f:selectItem id="NU" itemValue="NU" itemLabel="NU"/>
+                        <f:selectItem id="NT" itemValue="NT" itemLabel="NT"/>
+                        <f:selectItem id="ON" itemValue="ON" itemLabel="ON"/>
+                        <f:selectItem id="PE" itemValue="PE" itemLabel="PE"/>
+                        <f:selectItem id="QC" itemValue="QC" itemLabel="QC"/>
+                        <f:selectItem id="SK" itemValue="SK" itemLabel="SK"/>
+                        <f:selectItem id="YT" itemValue="YT" itemLabel="YT"/>
+                    </b:selectOneMenu>
+                    <h:message id="provinceMsg" style="color: red" for="province" />
+                    <b:inputText id="postalcode" placeholder="Postal Code" required="true" requiredMessage="Value is required" value="#{addLocationBean.postalcode}"/>
+                    <h:message id="postalcodeMsg" style="color: red" for="postalcode" />
+                    <b:inputText id="country" placeholder="Country" value="Canada" disabled="true"/>
+                    <b:datepicker id="addLocationDate" mode="popup" placeholder="Open Date" changeYear="true" changeMonth="true" value="#{addLocationBean.opendate}"/>
+                    <b:commandButton look="primary btn-block" value="Add Location" iconAwesome="sign-in" size="lg" actionListener="#{addLocationBean.addLocation}">
+                        <f:ajax execute="streetaddress city province postalcode country addLocationDate" 
+                                render="status streetaddressMsg cityMsg postalcodeMsg countryMsg addLocationDateMsg" />
+                    </b:commandButton>
+                </h:form>
+            </b:container>
+        </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>

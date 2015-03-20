@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+        <title>Restaurant DB Sign In</title>
+        <meta name="CanJee" content="Can Jee"></meta>
+    </h:head>
+    <h:body style="padding-top: 60px;">
+        <ui:composition template="./template.xhtml">
+
+        <ui:define name="content">
+        <b:container>
+            <h:form styleClass="form-signin" prependId="false">
+                <h2 class="form-signin-heading">Please sign in</h2>
+                <b:alert severity="danger" rendered="#{loginBean.loginFailed}"><b:iconAwesome name="warning" />
+                    #{loginBean.status}
+                </b:alert>
+                <b:inputText id="username" placeholder="Username" value="#{loginBean.username}">
+                    <f:facet name="prepend">
+                        <b:iconAwesome name="user" />
+                    </f:facet>
+                </b:inputText>
+                <b:inputSecret id="password" placeholder="Password" type="password" value="#{loginBean.password}">
+                    <f:facet name="prepend">
+                        <b:iconAwesome name="key" />
+                    </f:facet>
+                </b:inputSecret>
+                <b:commandButton look="primary btn-block" value="Sign In" iconAwesome="sign-in" size="lg" actionListener="#{loginBean.login}">
+                    <f:ajax execute="username password" render="status" />
+                </b:commandButton>
+            </h:form>
+        </b:container>
+        </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

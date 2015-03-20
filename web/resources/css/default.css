@@ -1,0 +1,27 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 15-Mar-2015, 1:24:49 AM
+    Author     : Can Jee
+*/
+
+#main {
+    margin-top: 10px;
+    margin-left: 300px;
+    margin-right: 300px;
+}
+
+#logoutBtn {
+    margin-top: 14px !important;
+    border: rgb(51, 51, 51);
+    color: #9d9d9d;
+    font-size: 14px;
+    background: none!important;
+}
+
+#addLocationDate {
+    margin-bottom: 20px
+}
