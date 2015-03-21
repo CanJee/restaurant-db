@@ -7,15 +7,12 @@ package beans;
 
 import facades.LocationFacade;
 import facades.RestaurantFacade;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.servlet.http.Part;
 import models.Location;
 import models.Owner;
 import models.Restaurant;

@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <h:head>
+        <title>Restaurant DB Add Menu Item</title>
+        <meta name="CanJee" content="Can Jee"></meta>
+    </h:head>
+    <h:body>
+
+        <ui:composition template="./../template.xhtml">
+
+            <ui:define name="content">
+            <b:container>
+                <h:form styleClass="form-signin" prependId="false">
+                    <h2>Please enter the restaurant and item</h2>
+                    <b:alert severity="danger" rendered="#{addMenuItemBean.isError}"><b:iconAwesome name="warning" />
+                        #{addMenuItemBean.status}
+                    </b:alert>
+                    <b:selectOneMenu id="restaurants" value="#{addMenuItemBean.restaurantName}">
+                        <f:selectItems value="#{viewRestaurantBean.restaurantNames}"/>
+                    </b:selectOneMenu>
+                    <h:message id="restaurantsMsg" style="color: red" for="restaurants" />
+                    <b:inputText id="name" placeholder="Item Name" required="true" requiredMessage="Value is required" value="#{addMenuItemBean.name}"/>
+                    <h:message id="nameMsg" style="color: red" for="name" />
+                    <h:outputLabel value="Type:" for="type" />
+                    <b:selectOneMenu id="type" required="true" requiredMessage="Value is required." value="#{addMenuItemBean.type}">
+                        <f:selectItem id="food" itemValue="food" itemLabel="Food"/>
+                        <f:selectItem id="beverage" itemValue="beverage" itemLabel="Beverage"/>
+                    </b:selectOneMenu>
+                    <h:message id="typeMsg" style="color: red" for="type" />
+                    <h:outputLabel value="Category:" for="type" />
+                    <b:selectOneMenu id="category" required="true" requiredMessage="Value is required." value="#{addMenuItemBean.category}">
+                        <f:selectItem id="starter" itemValue="starter" itemLabel="Starter"/>
+                        <f:selectItem id="mainItem" itemValue="main" itemLabel="Main"/>
+                        <f:selectItem id="dessert" itemValue="dessert" itemLabel="Dessert"/>
+                    </b:selectOneMenu>
+                    <h:message id="categoryMsg" style="color: red" for="category" />
+                    <b:inputText id="description"  placeholder="Item Description" required="true" requiredMessage="Value is required" value="#{addMenuItemBean.description}"/>
+                    <h:message id="descriptionMsg" style="color: red" for="description" />
+                    <b:inputText id="price" placeholder="Item Price" required="true" requiredMessage="Value is required" value="#{addMenuItemBean.price}"/>
+                    <h:message id="priceMsg" style="color: red" for="price" />
+                    <b:commandButton look="primary btn-block" value="Add Menu Item" iconAwesome="sign-in" size="lg" actionListener="#{addMenuItemBean.addMenuItem}">
+                        <f:ajax execute="restaurants name type category description price" 
+                                render="status restaurantsMsg nameMsg typeMsg categoryMsg descriptionMsg priceMsg" />
+                    </b:commandButton>
+                </h:form>
+            </b:container>
+        </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>

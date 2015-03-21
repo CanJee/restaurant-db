@@ -50,7 +50,7 @@
                     <b:inputText id="country" placeholder="Country" value="Canada" disabled="true"/>
                     <b:datepicker id="addLocationDate" mode="popup" placeholder="Open Date" changeYear="true" changeMonth="true" value="#{addLocationBean.opendate}"/>
                     <b:commandButton look="primary btn-block" value="Add Location" iconAwesome="sign-in" size="lg" actionListener="#{addLocationBean.addLocation}">
-                        <f:ajax execute="streetaddress city province postalcode country addLocationDate" 
+                        <f:ajax execute="streetaddress city province postalcode country addLocationDate restaurants" 
                                 render="status streetaddressMsg cityMsg postalcodeMsg countryMsg addLocationDateMsg" />
                     </b:commandButton>
                 </h:form>

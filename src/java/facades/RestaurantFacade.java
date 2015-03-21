@@ -49,6 +49,18 @@ public class RestaurantFacade extends BaseFacade {
             query.setParameter("name", name);
             Restaurant result = performQuery(Restaurant.class, query);
             return result;
-        }     
+        }
+        
+        public boolean inOwnerRestaurantList (Owner owner, Restaurant restaurant) {
+            boolean inList = false;
+            List<Location> ownerResList = owner.getLocation();
+            for (Location loc : ownerResList) {
+                if (loc.getRestaurant().equals(restaurant))
+                    inList = true;
+            }
+            
+            return inList;
+            
+        }
     
 }
