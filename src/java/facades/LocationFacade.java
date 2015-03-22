@@ -60,4 +60,24 @@ public class LocationFacade extends BaseFacade {
         return inList;
     }
     
+    public List<Location> getByLocationsByRestaurant(Restaurant restaurant, EntityManager em) {
+        Query query = em.createQuery("SELECT l FROM Location l WHERE l.restaurant = :restaurant");
+        query.setParameter("restaurant", restaurant);
+        List<Location> locations = performQueryList(Location.class, query);
+
+        if( locations == null ) {
+            locations = new ArrayList<Location>();
+        }
+
+        return locations;
+    }
+    
+    public Location findByStreetAddress (String streetaddress, EntityManager em){
+
+        Query query = em.createQuery("SELECT l FROM Location l WHERE l.streetaddress = :streetaddress");
+        query.setParameter("streetaddress", streetaddress);
+        Location result = performQuery(Location.class, query);
+        return result;
+    }
+    
 }

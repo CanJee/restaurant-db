@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @WebFilter(filterName = "AuthenticationFilter",
-           urlPatterns = {"/owner/*", "/user/*"})
+           urlPatterns = {"/owner/*", "/rater/*"})
 public class AuthenticationFilter implements Filter {
 
     // The filter configuration object we are associated with.  If
