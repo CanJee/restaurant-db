@@ -30,6 +30,7 @@ public class LocationFacade extends BaseFacade {
             ownerLocationList.add(location);
             em.merge(owner);
             em.merge(restaurant);
+            em.persist(location);
             utx.commit();
             return true;
         } catch (Exception e) {

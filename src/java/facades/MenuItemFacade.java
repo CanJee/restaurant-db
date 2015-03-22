@@ -32,9 +32,8 @@ public class MenuItemFacade extends BaseFacade{
             utx.begin();
             List<MenuItem> menuItems = restaurant.getMenuitem();
             menuItems.add(menuItem);
-            menuItem.setRestaurant(restaurant);
             em.merge(restaurant);
-            em.merge(menuItem);
+            em.persist(menuItem);
             utx.commit();
             return true;
             
