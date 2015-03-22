@@ -19,6 +19,9 @@
                     <b:navLink value="Add Location" outcome="/owner/add_location"/>
                     <b:navLink value="Add Menu Item" outcome="/owner/add_menuitem"/>
                 </c:if>
+                <c:if test="#{sessionBean.rater}" >
+                    <b:navLink value="Add Rating" outcome="/rater/add_rating"/>
+                </c:if>
             </b:navbarLinks>
             <b:navbarLinks pull="right">
                 <c:if test="#{!sessionBean.loggedIn}">
