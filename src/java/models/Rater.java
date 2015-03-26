@@ -25,9 +25,9 @@ import javax.persistence.OneToMany;
 public class Rater extends User {
     private static final long serialVersionUID = 1L;
     
-    @OneToMany (mappedBy = "rater")
+    @OneToMany(fetch=FetchType.EAGER)
     private List<Rating> ratings;
-    @OneToMany (mappedBy = "rater")
+    @OneToMany(fetch=FetchType.EAGER)
     private List<RatingItem> itemratings;
 
     public List<Rating> getRatings() {

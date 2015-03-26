@@ -48,7 +48,9 @@
                     <b:inputText id="postalcode" placeholder="Postal Code" required="true" requiredMessage="Value is required" value="#{addLocationBean.postalcode}"/>
                     <h:message id="postalcodeMsg" style="color: red" for="postalcode" />
                     <b:inputText id="country" placeholder="Country" value="Canada" disabled="true"/>
-                    <b:datepicker id="addLocationDate" mode="popup" placeholder="Open Date" changeYear="true" changeMonth="true" value="#{addLocationBean.opendate}"/>
+                    <b:datepicker id="addLocationDate" mode="popup" placeholder="Open Date" changeYear="true" changeMonth="true" value="#{addLocationBean.opendate}">
+                        <f:convertDateTime pattern="MM/dd/yyyy" timeZone="EST"/>
+                    </b:datepicker>
                     <b:commandButton look="primary btn-block" value="Add Location" iconAwesome="sign-in" size="lg" actionListener="#{addLocationBean.addLocation}">
                         <f:ajax execute="streetaddress city province postalcode country addLocationDate restaurants" 
                                 render="status streetaddressMsg cityMsg postalcodeMsg countryMsg addLocationDateMsg" />

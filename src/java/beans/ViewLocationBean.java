@@ -12,6 +12,7 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.faces.event.ValueChangeEvent;
 import models.Location;
 import models.Restaurant;
 
@@ -28,7 +29,22 @@ public class ViewLocationBean extends BaseBean{
     
     @ManagedProperty(value="#{restaurantFacade}")
     RestaurantFacade restaurantFacade;
-
+    
+    private String orderBy = "province";
+    private boolean ascending = true;
+    private List<Location> locations;
+    private List<String> restaurantStreetAddresses;
+    private String restaurantName;
+    private String streetname;
+    private String province;
+    private String city;
+    private String postalcode;
+    private Restaurant restaurant;
+    
+    public void valueChanged (ValueChangeEvent event){
+        restaurantName = event.getNewValue().toString();
+    }
+    
     public RestaurantFacade getRestaurantFacade() {
         return restaurantFacade;
     }
@@ -36,17 +52,19 @@ public class ViewLocationBean extends BaseBean{
     public void setRestaurantFacade(RestaurantFacade restaurantFacade) {
         this.restaurantFacade = restaurantFacade;
     }
-    
-    private String orderBy = "rating";
-    private boolean ascending = true;
-    private List<Location> restaurantLocations;
-    private List<String> streetAddress;
-    private String restaurantName;
-    private String streetname;
-    private String province;
-    private String city;
-    private String postalcode;
-    private Restaurant restaurant;
+
+    public List<String> getRestaurantStreetAddresses() {
+        restaurantStreetAddresses = new ArrayList<String>();
+        List<Location> locations = getLocations();
+        for (Location location : locations){
+            restaurantStreetAddresses.add(location.getStreetaddress());
+        }
+        return restaurantStreetAddresses;
+    }
+
+    public void setRestaurantStreetAddresses(List<String> restaurantStreetAddresses) {
+        this.restaurantStreetAddresses = restaurantStreetAddresses;
+    }
 
     public String getRestaurantName() {
         return restaurantName;
@@ -54,20 +72,6 @@ public class ViewLocationBean extends BaseBean{
 
     public void setRestaurantName(String restaurantName) {
         this.restaurantName = restaurantName;
-    }
-
-    public List<String> getStreetAddress() {
-        List<Location> locations = getRestaurantLocations();
-        this.streetAddress = new ArrayList();
-        for (Location location : locations) {
-            streetAddress.add(location.getStreetaddress());
-        }
-        
-        return streetAddress;
-    }
-
-    public void setStreetAddress(List<String> streetAddress) {
-        this.streetAddress = streetAddress;
     }
 
     public Restaurant getRestaurant() {
@@ -102,13 +106,12 @@ public class ViewLocationBean extends BaseBean{
         this.ascending = ascending;
     }
 
-    public List<Location> getRestaurantLocations() {
-        List<Location> locs = locationFacade.getByLocationsByRestaurant(getRestaurant(), em);
-        return locs;
+    public List<Location> getLocations() {
+        return locationFacade.getByLocationsByRestaurant(getRestaurant(), em);
     }
 
-    public void setRestaurantLocations(List<Location> restaurantLocations) {
-        this.restaurantLocations = restaurantLocations;
+    public void setLocations(List<Location> locations) {
+        this.locations = locations;
     }
 
     public String getStreetname() {

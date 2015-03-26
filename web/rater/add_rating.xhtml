@@ -21,13 +21,13 @@
                     <b:alert severity="danger" rendered="#{addRatingBean.isError}"><b:iconAwesome name="warning" />
                         #{addRatingBean.status}
                     </b:alert>
-                    <b:selectOneMenu id="restaurants" value="#{addRatingBean.restaurantName}">
+                    <h:selectOneMenu class="form-control" id="restaurants" value="#{addRatingBean.restaurantName}" valueChangeListener="#{viewLocationBean.valueChanged}">
                         <f:selectItems value="#{viewRestaurantBean.restaurantNames}"/>
-                        <f:ajax render="@form" />
-                    </b:selectOneMenu>
+                        <f:ajax event="change" execute="@form" render="locations"/>
+                    </h:selectOneMenu>
                     <h:message id="restaurantsMsg" style="color: red" for="restaurants" />
                     <b:selectOneMenu id="locations" value="#{addRatingBean.streetaddress}">
-                        <f:selectItems value="#{viewLocationBean.streetAddress}"/>
+                        <f:selectItems value="#{viewLocationBean.restaurantStreetAddresses}"/>
                     </b:selectOneMenu>
                     <h:message id="locationsMsg" style="color: red" for="locations" />
                     <b:slider id="fr" min="1" max="10" label="Food Rating" mode="badge" value="#{addRatingBean.foodrating}"/>
@@ -36,7 +36,9 @@
                     <b:slider id="sr" min="1" max="10" label="Staff Rating" mode="badge" value="#{addRatingBean.staffrating}"/>
                     <b:inputText id="comments" placeholder="Comments" required="true" requiredMessage="Value is required" value="#{addRatingBean.comments}"/>
                     <h:message id="commentsMsg" style="color: red" for="comments" />
-                    <b:datepicker id="visitDate" mode="popup" placeholder="Visit Date" changeYear="true" changeMonth="true" value="#{addRatingBean.visitDate}"/>
+                    <b:datepicker id="visitDate" mode="popup" placeholder="Visit Date" changeYear="true" changeMonth="true" value="#{addRatingBean.visitDate}">
+                        <f:convertDateTime pattern="MM/dd/yyyy" timeZone="EST"/>
+                    </b:datepicker>
                     <b:commandButton look="primary btn-block" value="Add Rating" iconAwesome="sign-in" size="lg" actionListener="#{addRatingBean.addRating}">
                         <f:ajax execute="restaurants locations fr mr pr sr visitDate" 
                                 render="status restaurantsMsg locationsMsg commentsMsg" />

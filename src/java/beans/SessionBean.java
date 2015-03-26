@@ -44,7 +44,7 @@ public class SessionBean implements Serializable {
     }
     
     public Rater getRater() {        
-        if (user instanceof Owner) {
+        if (user instanceof Rater) {
             return (Rater)user;
         }
         return null;

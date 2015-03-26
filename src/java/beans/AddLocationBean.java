@@ -157,7 +157,6 @@ public class AddLocationBean extends BaseBean{
         location.setOpendate(sqlDate);
         location.setOwner(resOwner);
         location.setRestaurant(res);
-        
         boolean inRestaurantList = locationFacade.inRestaurantLocationList(res, location);
         
         if (inRestaurantList) {

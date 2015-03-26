@@ -22,6 +22,10 @@ and open the template in the editor.
     background: none!important;
 }
 
-#addLocationDate {
+#addLocationDate, #visitDate {
     margin-bottom: 20px
+}
+
+#restaurants {
+    margin-bottom: 10px;
 }

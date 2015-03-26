@@ -42,13 +42,7 @@ public class TestDataServlet extends HttpServlet {
             Owner owner = createOwner();
             Rater rater = createRater();
             
-            createRestaurants();
-            
-            createLocations(restaurant1, owner);
-            createLocations(restaurant2, owner);
-            createLocations(restaurant3, owner);
-            createLocations(restaurant4, owner);
-            createLocations(restaurant5, owner);
+            createRestaurantsAndLocations(owner);
             
             utx.commit();
         } catch (Exception e) {
@@ -98,12 +92,22 @@ public class TestDataServlet extends HttpServlet {
         return user;
     }
     
-    private void createRestaurants() {
+    private void createRestaurantsAndLocations(Owner owner) {
         restaurant1 = new Restaurant();
         restaurant2 = new Restaurant();
         restaurant3 = new Restaurant();
         restaurant4 = new Restaurant();
         restaurant5 = new Restaurant();
+        java.util.Calendar cal = Calendar.getInstance();
+        java.sql.Date sqlDate = new java.sql.Date(cal.getTime().getTime());
+        Location location = new Location();
+        location.setStreetaddress("25 test drive");
+        location.setCity("Ottawa");
+        location.setPostalcode("A0A 0A0");
+        location.setProvince("ON");
+        location.setOpendate(sqlDate);
+        location.setRestaurant(restaurant1);
+        location.setOwner(owner);
         restaurant1.setName("McDonalds");
         restaurant1.setUrl("http://www.mcdonalds.com");
         restaurant1.setType("American");
@@ -124,21 +128,7 @@ public class TestDataServlet extends HttpServlet {
         em.persist(restaurant3);
         em.persist(restaurant4);
         em.persist(restaurant5);
-    }
-    
-    private void createLocations(Restaurant restaurant, Owner owner) {
-        java.util.Calendar cal = Calendar.getInstance();
-        java.sql.Date sqlDate = new java.sql.Date(cal.getTime().getTime());
-        Location location = new Location();
-        location.setStreetaddress("25 test drive");
-        location.setCity("Ottawa");
-        location.setPostalcode("A0A 0A0");
-        location.setProvince("ON");
-        location.setOpendate(sqlDate);
-        location.setRestaurant(restaurant);
-        location.setOwner(owner);
         em.persist(location);
-        
     }
     
     public boolean setPassword(UserAccount userAccount, String password) {

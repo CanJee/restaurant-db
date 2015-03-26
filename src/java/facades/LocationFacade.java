@@ -81,4 +81,31 @@ public class LocationFacade extends BaseFacade {
         return result;
     }
     
+    public List<Location> getLocationList(String orderBy, boolean ascending, EntityManager em) {
+
+        String queryString = "SELECT l FROM Location l";
+
+        if (orderBy.equals("province")) {
+            queryString += "  ORDER BY l.province ";
+        } else {
+            queryString += "  ORDER BY l.restaurant ";
+        }
+
+        if (ascending) {
+            queryString += "ASC";
+        } else {
+            queryString += "DESC";
+        }
+
+        Query query = em.createQuery(queryString);
+
+        List<Location> locations = performQueryList(Location.class, query);
+
+        if( locations == null ) {
+            locations = new ArrayList<Location>();
+        }
+
+        return locations;
+    }
+    
 }

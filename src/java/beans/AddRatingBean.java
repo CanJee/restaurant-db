@@ -21,6 +21,7 @@ import models.Location;
 import models.Rating;
 import models.Restaurant;
 import beans.ViewLocationBean;
+import models.User;
 
 /**
  *
@@ -39,7 +40,6 @@ public class AddRatingBean extends BaseBean{
     @ManagedProperty(value="#{restaurantFacade}")
     RestaurantFacade restaurantFacade;
     
-    private Date visitDate;
     private Date ratingDate;
     private int pricerating;
     private int foodrating;
@@ -48,6 +48,7 @@ public class AddRatingBean extends BaseBean{
     private String comments;
     private String restaurantName;
     private String streetaddress;
+    private Date visitDate;
     private Location location;
     private Rater rater;
     private String status;
@@ -184,33 +185,39 @@ public class AddRatingBean extends BaseBean{
     
     public void addRating() {
         
-        java.util.Calendar cal = Calendar.getInstance();
+        Calendar cal = Calendar.getInstance();
         java.sql.Date currentSqlDate = new java.sql.Date(cal.getTime().getTime()); 
-        java.sql.Date sqlVisitDate = new java.sql.Date(visitDate.getTime());
         
         Restaurant res = restaurantFacade.findByRestaurantName(restaurantName, em);
         Location loc = locationFacade.findByStreetAddress(streetaddress, em);
         Rating rating = new Rating();
-        Rater rater = sessionBean.getRater();
+        User user = sessionBean.getUser();
+        Rater ratingRater = sessionBean.getRater();
         
         rating.setComments(comments);
         rating.setFoodrating(foodrating);
         rating.setMoodrating(moodrating);
         rating.setPricerating(pricerating);
         rating.setStaffrating(staffrating);
-        rating.setVisitdate(sqlVisitDate);
         rating.setRatingdate(currentSqlDate);
-        rating.setRater(rater);
+        rating.setRater(ratingRater);
         rating.setLocation(loc);
-        
-        ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
-            if( ratingFacade.addRating(rating, loc, rater) ) {
+        System.out.println(visitDate);
+        if (ratingFacade.alreadyRatedForVisitDate(visitDate, ratingRater, loc)){
+            isError = true;
+            status = "You have already entered a rating for this visit date";
+        }
+        else {
+            isError = false;
+            ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+            if( ratingFacade.addRating(rating, loc, ratingRater, visitDate) ) {
 
                 try {
                     context.redirect(context.getRequestContextPath() +
                         "/rater/add_rating_successful.xhtml");
                 } catch (Exception e) {}
             }
+        }
     }
     
 }
