@@ -140,11 +140,9 @@ public class AddMenuItemBean extends BaseBean{
         menuItem.setType(type);
         menuItem.setCategory(category);
         menuItem.setPrice(price);
-        menuItem.setRestaurant(restaurant);
+        menuItem.setRestaurant(res);
         menuItem.setDescription(description);
-        System.out.println(menuItem);
         boolean inRestaurantMenuItemList = menuItemFacade.inRestaurantItemList(res, menuItem);
-        System.out.println(inRestaurantMenuItemList);
         boolean inOwnerLocationList = restaurantFacade.inOwnerRestaurantList(resOwner, res);
         
         if (!inOwnerLocationList) {

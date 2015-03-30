@@ -56,4 +56,22 @@ public class MenuItemFacade extends BaseFacade{
         
     }
     
+    public MenuItem findByItemName(String name, EntityManager em) {
+        Query query = em.createQuery("SELECT i FROM MenuItem i WHERE i.name = :name");
+        query.setParameter("name", name);
+        MenuItem result = performQuery(MenuItem.class, query);
+        return result;
+    } 
+    
+    public List<MenuItem> getByMenuItemsByRestaurant(Restaurant restaurant, EntityManager em) {
+        Query query = em.createQuery("SELECT i FROM MenuItem i WHERE i.restaurant = :restaurant");
+        query.setParameter("restaurant", restaurant);
+        List<MenuItem> items = performQueryList(MenuItem.class, query);
+        if( items == null ) {
+            items = new ArrayList<MenuItem>();
+        }
+
+        return items;
+    }
+    
 }

@@ -4,7 +4,9 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Random;
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
@@ -13,6 +15,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.transaction.UserTransaction;
 import models.Location;
+import models.MenuItem;
 import models.Rater;
 import models.Owner;
 import models.Restaurant;
@@ -42,7 +45,9 @@ public class TestDataServlet extends HttpServlet {
             Owner owner = createOwner();
             Rater rater = createRater();
             
-            createRestaurantsAndLocations(owner);
+            createRestaurants(owner);
+            addLocation(owner, restaurant1);
+            addMenuItem(restaurant1);
             
             utx.commit();
         } catch (Exception e) {
@@ -92,22 +97,12 @@ public class TestDataServlet extends HttpServlet {
         return user;
     }
     
-    private void createRestaurantsAndLocations(Owner owner) {
+    private void createRestaurants(Owner owner) {
         restaurant1 = new Restaurant();
         restaurant2 = new Restaurant();
         restaurant3 = new Restaurant();
         restaurant4 = new Restaurant();
         restaurant5 = new Restaurant();
-        java.util.Calendar cal = Calendar.getInstance();
-        java.sql.Date sqlDate = new java.sql.Date(cal.getTime().getTime());
-        Location location = new Location();
-        location.setStreetaddress("25 test drive");
-        location.setCity("Ottawa");
-        location.setPostalcode("A0A 0A0");
-        location.setProvince("ON");
-        location.setOpendate(sqlDate);
-        location.setRestaurant(restaurant1);
-        location.setOwner(owner);
         restaurant1.setName("McDonalds");
         restaurant1.setUrl("http://www.mcdonalds.com");
         restaurant1.setType("American");
@@ -128,7 +123,35 @@ public class TestDataServlet extends HttpServlet {
         em.persist(restaurant3);
         em.persist(restaurant4);
         em.persist(restaurant5);
+    }
+    
+    private void addLocation(Owner owner, Restaurant restaurant) {
+        java.util.Calendar cal = Calendar.getInstance();
+        java.sql.Date sqlDate = new java.sql.Date(cal.getTime().getTime());
+        List<Location> ownerLocations = new ArrayList<Location>();
+        Location location = new Location();
+        location.setStreetaddress("25 test drive");
+        location.setCity("Ottawa");
+        location.setPostalcode("A0A 0A0");
+        location.setProvince("ON");
+        location.setOpendate(sqlDate);
+        location.setRestaurant(restaurant);
+        location.setOwner(owner);
+        ownerLocations.add(location);
+        owner.setLocation(ownerLocations);
+        em.persist(owner);
         em.persist(location);
+    }
+    
+    private void addMenuItem(Restaurant restaurant){
+        MenuItem item = new MenuItem();
+        item.setCategory("main");
+        item.setName("Cheese Burger");
+        item.setType("food");
+        item.setDescription("Cheese burger with lettuce and tomatoes");
+        item.setPrice(5.75);
+        item.setRestaurant(restaurant);
+        em.persist(item);
     }
     
     public boolean setPassword(UserAccount userAccount, String password) {

@@ -28,7 +28,7 @@ import models.User;
  * @author Alan
  */
 @ManagedBean
-@SessionScoped
+@RequestScoped
 public class AddRatingBean extends BaseBean{
     
     @ManagedProperty(value="#{locationFacade}")
@@ -191,7 +191,6 @@ public class AddRatingBean extends BaseBean{
         Restaurant res = restaurantFacade.findByRestaurantName(restaurantName, em);
         Location loc = locationFacade.findByStreetAddress(streetaddress, em);
         Rating rating = new Rating();
-        User user = sessionBean.getUser();
         Rater ratingRater = sessionBean.getRater();
         
         rating.setComments(comments);
@@ -202,7 +201,6 @@ public class AddRatingBean extends BaseBean{
         rating.setRatingdate(currentSqlDate);
         rating.setRater(ratingRater);
         rating.setLocation(loc);
-        System.out.println(visitDate);
         if (ratingFacade.alreadyRatedForVisitDate(visitDate, ratingRater, loc)){
             isError = true;
             status = "You have already entered a rating for this visit date";
