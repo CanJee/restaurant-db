@@ -75,7 +75,6 @@ public class ViewMenuItemBean extends BaseBean{
     
     public void valueChanged (ValueChangeEvent event){
         restaurantName = event.getNewValue().toString();
-        System.out.println(getItemNames());
     }
 
     public MenuItemFacade getMenuItemFacade() {

@@ -11,6 +11,7 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.faces.event.ValueChangeEvent;
 import models.Restaurant;
 
 /**
@@ -32,6 +33,31 @@ public class ViewRestaurantBean extends BaseBean{
     private String name;
     private String type;
     private String url;
+    private int restaurantCount;
+    
+    public void orderedByChanged (ValueChangeEvent event){
+        orderBy = event.getNewValue().toString();
+        sort();
+    }
+    
+    public void ascendingChanged (ValueChangeEvent event){
+        String test = event.getNewValue().toString();
+        if (test.equals("true"))
+            ascending = true;
+        else
+            ascending = false;
+        sort();
+    }
+
+    public int getRestaurantCount() {
+        if (restaurants == null)
+            return 0;
+        return restaurants.size();
+    }
+
+    public void setRestaurantCount(int restaurantCount) {
+        this.restaurantCount = restaurantCount;
+    }
 
     public RestaurantFacade getRestaurantFacade() {
         return restaurantFacade;
@@ -58,7 +84,13 @@ public class ViewRestaurantBean extends BaseBean{
     }
 
     public List<Restaurant> getRestaurants() {
-        return restaurantFacade.getRestaurantList(orderBy, ascending, em);
+        restaurants = restaurantFacade.getRestaurantList(orderBy, ascending, em);
+        System.out.println(restaurants.size());
+        return restaurants;
+    }
+    
+    public void sort() {
+        restaurants = restaurantFacade.getRestaurantList(orderBy, ascending, em);
     }
     
     public List<String> getRestaurantNames() {

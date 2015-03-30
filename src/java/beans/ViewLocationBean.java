@@ -12,6 +12,8 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import models.Location;
 import models.Restaurant;
@@ -40,6 +42,46 @@ public class ViewLocationBean extends BaseBean{
     private String city;
     private String postalcode;
     private Restaurant restaurant;
+    private int locationCount;
+    
+    public void orderedByChanged (ValueChangeEvent event){
+        orderBy = event.getNewValue().toString();
+        getLocations();
+    }
+    
+    public void ascendingChanged (ValueChangeEvent event){
+        String test = event.getNewValue().toString();
+        if (test.equals("true"))
+            ascending = true;
+        else
+            ascending = false;
+        System.out.println(ascending);
+        getLocations();
+    }
+
+    public int getLocationCount() {
+        getLocations();
+        if (locations == null)
+           locationCount = 0;
+        else
+            locationCount = locations.size();
+        return locationCount;
+    }
+
+    public void setLocationCount(int locationCount) {
+        this.locationCount = locationCount;
+    }
+    
+    public void viewRestaurantLocations(Restaurant restaurant) {
+        this.restaurant = restaurant;
+        restaurantName = restaurant.getName();
+        locations = restaurant.getLocation();
+        
+        ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+        try {
+        context.redirect(context.getRequestContextPath() + "/view_restaurant_locations.xhtml");
+        } catch (Exception e) {}
+    }
     
     public void valueChanged (ValueChangeEvent event){
         restaurantName = event.getNewValue().toString();
@@ -107,7 +149,8 @@ public class ViewLocationBean extends BaseBean{
     }
 
     public List<Location> getLocations() {
-        return locationFacade.getByLocationsByRestaurant(getRestaurant(), em);
+        locations = locationFacade.getByLocationsByRestaurant(getRestaurant(), orderBy, ascending, em);
+        return locations;
     }
 
     public void setLocations(List<Location> locations) {

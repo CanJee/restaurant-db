@@ -29,3 +29,28 @@ and open the template in the editor.
 #restaurants {
     margin-bottom: 10px;
 }
+
+.selectMenu {
+    margin-bottom: 10px;
+}
+
+table tbody tr td{
+    padding: 5px;
+}
+
+table thead tr th{
+    padding: 5px;
+}
+
+#orderBy {
+    width: 40%;
+}
+
+#ascending {
+    width: 40%;
+}
+
+.view_content {
+    width: 70%;
+    margin: 0 auto;
+}

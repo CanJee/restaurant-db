@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <h:head>
+        <title>View Restaurants</title>
+        <meta name="CanJee" content="Can Jee"></meta>
+    </h:head>
+    <h:body>
+
+        <ui:composition template="./template2.xhtml">
+
+            <ui:define name="content">
+                <f:view>
+                    <h:form id="pagedResults" prependId="false" >
+                        <h2 class="form-signin-heading">Locations for restaurant #{viewLocationBean.restaurant.name}</h2>
+                        <c:if test="#{viewLocationBean.locationCount == 0}">
+                            <h:outputText value="There are no restaurants to display." />
+                        </c:if>
+                        <c:if test="#{viewLocationBean.locationCount > 0}">
+                    <h:outputLabel for="orderBy" value="Order By:" />
+                    <h:selectOneMenu id="orderBy" class="form-control selectMenu" value="#{viewLocationBean.orderBy}" valueChangeListener="#{viewLocationBean.orderedByChanged}">
+                        <f:selectItem itemValue="province" itemLabel="Province" />
+                        <f:selectItem itemValue="city" itemLabel="City" />
+                        <f:ajax event="change" execute="@form" render="location_table"/>
+                    </h:selectOneMenu>
+                    
+                    <h:selectOneMenu id="ascending" class="form-control selectMenu" value="#{viewLocationBean.ascending}" valueChangeListener="#{viewLocationBean.ascendingChanged}">
+                        <f:selectItem itemValue="true" itemLabel="Ascending" />
+                        <f:selectItem itemValue="false" itemLabel="Descending" />
+                        <f:ajax event="change" execute="@form" render="location_table"/>
+                    </h:selectOneMenu>
+                    
+                    <h:dataTable id="location_table" cellpadding="10" value="#{viewLocationBean.locations}"
+                                  var="location" border="1">
+                         <h:column>
+                            <f:facet name="header">Address</f:facet>
+                            <h:outputText value="#{location.streetaddress}, #{location.city}, #{location.province}, #{location.postalcode}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Open Date</f:facet>
+                            <h:outputText value="#{location.opendate}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Owner</f:facet>
+                            <h:outputText value="#{location.owner.userAccount.firstname} #{location.owner.userAccount.lastname}"/>
+                        </h:column>
+                        <h:column>
+                            <b:commandButton value="View Ratings" look="primary" type="command" actionListener="#{viewRatingsBean.viewLocationRatings(location)}"/>
+                        </h:column>
+                     </h:dataTable>
+                    </c:if>
+                </h:form>
+                </f:view>
+        </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>

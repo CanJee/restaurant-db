@@ -61,8 +61,21 @@ public class LocationFacade extends BaseFacade {
         return inList;
     }
     
-    public List<Location> getByLocationsByRestaurant(Restaurant restaurant, EntityManager em) {
-        Query query = em.createQuery("SELECT l FROM Location l WHERE l.restaurant = :restaurant");
+    public List<Location> getByLocationsByRestaurant(Restaurant restaurant, String orderBy, boolean ascending,  EntityManager em) {
+        String queryString = "SELECT l FROM Location l WHERE l.restaurant = :restaurant";
+        
+        if (orderBy.equals("province")) {
+            queryString += "  ORDER BY l.province ";
+        } else {
+            queryString += "  ORDER BY l.city ";
+        }
+
+        if (ascending) {
+            queryString += "ASC";
+        } else {
+            queryString += "DESC";
+        }
+        Query query = em.createQuery(queryString);
         query.setParameter("restaurant", restaurant);
         List<Location> locations = performQueryList(Location.class, query);
 
@@ -88,7 +101,7 @@ public class LocationFacade extends BaseFacade {
         if (orderBy.equals("province")) {
             queryString += "  ORDER BY l.province ";
         } else {
-            queryString += "  ORDER BY l.restaurant ";
+            queryString += "  ORDER BY l.city ";
         }
 
         if (ascending) {

@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <h:head>
+        <title>View Restaurants</title>
+        <meta name="CanJee" content="Can Jee"></meta>
+    </h:head>
+    <h:body>
+
+        <ui:composition template="./template2.xhtml">
+
+            <ui:define name="content">
+                <f:view>
+                    <h:form id="pagedResults" prependId="false" > 
+                    <h:outputLabel for="orderBy" value="Order By:" />
+                    <h:selectOneMenu id="orderBy" class="form-control selectMenu" value="#{viewRestaurantBean.orderBy}" valueChangeListener="#{viewRestaurantBean.orderedByChanged}">
+                        <f:selectItem itemValue="name" itemLabel="Name" />
+                        <f:selectItem itemValue="type" itemLabel="Type" />
+                        <f:ajax event="change" execute="@form" render="restaurant_table"/>
+                    </h:selectOneMenu>
+                    
+                    <h:selectOneMenu id="ascending" class="form-control selectMenu" value="#{viewRestaurantBean.ascending}" valueChangeListener="#{viewRestaurantBean.ascendingChanged}">
+                        <f:selectItem itemValue="true" itemLabel="Ascending" />
+                        <f:selectItem itemValue="false" itemLabel="Descending" />
+                        <f:ajax event="change" execute="@form" render="restaurant_table"/>
+                    </h:selectOneMenu>
+                    
+                    <h:dataTable id="restaurant_table" cellpadding="10" value="#{viewRestaurantBean.restaurants}"
+                                  var="restaurant" border="1">
+                         <h:column>
+                            <f:facet name="header">Name</f:facet>
+                            <h:outputText value="#{restaurant.name}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Type</f:facet>
+                            <h:outputText value="#{restaurant.type}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">URL</f:facet>
+                            <h:outputText value="#{restaurant.url}"/>
+                        </h:column>
+                        <h:column>
+                            <b:commandButton value="View Locations" look="primary" type="command" actionListener="#{viewLocationBean.viewRestaurantLocations(restaurant)}"/>
+                        </h:column>
+                     </h:dataTable>
+                </h:form>
+                </f:view>
+        </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
