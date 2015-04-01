@@ -13,6 +13,8 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import models.RatingItem;
 import models.MenuItem;
@@ -32,6 +34,8 @@ public class ViewMenuItemBean extends BaseBean{
     @ManagedProperty(value="#{restaurantFacade}")
     RestaurantFacade restaurantFacade;
     
+    private String orderBy = "name";
+    private boolean ascending = true;
     private String itemName;
     private String restaurantName;
     private int rating;
@@ -39,6 +43,61 @@ public class ViewMenuItemBean extends BaseBean{
     private List<String> itemNames;
     private List<MenuItem> menuItems;
     private Restaurant restaurant;
+    private int menuItemCount;
+    
+    public void orderedByChanged (ValueChangeEvent event){
+        orderBy = event.getNewValue().toString();
+        getMenuItems();
+    }
+    
+    public void ascendingChanged (ValueChangeEvent event){
+        String test = event.getNewValue().toString();
+        if (test.equals("true"))
+            ascending = true;
+        else
+            ascending = false;
+        getMenuItems();
+    }
+
+    public String getOrderBy() {
+        return orderBy;
+    }
+
+    public void setOrderBy(String orderBy) {
+        this.orderBy = orderBy;
+    }
+
+    public boolean isAscending() {
+        return ascending;
+    }
+
+    public void setAscending(boolean ascending) {
+        this.ascending = ascending;
+    }
+
+    public int getMenuItemCount() {
+        getMenuItems();
+        if (menuItems == null)
+           menuItemCount = 0;
+        else
+            menuItemCount = menuItems.size();
+        return menuItemCount;
+    }
+
+    public void setMenuItemCount(int menuItemCount) {
+        this.menuItemCount = menuItemCount;
+    }
+    
+    public void viewRestaurantMenuItems(Restaurant restaurant) {
+        this.restaurant = restaurant;
+        restaurantName = restaurant.getName();
+        menuItems = restaurant.getMenuitem();
+        
+        ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+        try {
+        context.redirect(context.getRequestContextPath() + "/view_restaurant_menuitems.xhtml");
+        } catch (Exception e) {}
+    }
 
     public RestaurantFacade getRestaurantFacade() {
         return restaurantFacade;
@@ -65,8 +124,8 @@ public class ViewMenuItemBean extends BaseBean{
     }
 
     public List<MenuItem> getMenuItems() {
-        List<MenuItem> res = menuItemFacade.getByMenuItemsByRestaurant(getRestaurant(), em);
-        return res;
+        menuItems = menuItemFacade.getByMenuItemsByRestaurant(getRestaurant(), orderBy, ascending, em);
+        return menuItems;
     }
 
     public void setMenuItems(List<MenuItem> menuItems) {

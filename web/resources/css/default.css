@@ -44,13 +44,24 @@ table thead tr th{
 
 #orderBy {
     width: 40%;
+    display: inline-block;
+    margin-right: 10px;
 }
 
 #ascending {
     width: 40%;
+    display: inline-block;
 }
 
 .view_content {
-    width: 70%;
+    width: 80%;
     margin: 0 auto;
+}
+
+#orderByLabel {
+    display: block;
+}
+
+.capitalize {
+    text-transform: capitalize;
 }

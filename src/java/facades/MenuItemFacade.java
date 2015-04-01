@@ -63,8 +63,25 @@ public class MenuItemFacade extends BaseFacade{
         return result;
     } 
     
-    public List<MenuItem> getByMenuItemsByRestaurant(Restaurant restaurant, EntityManager em) {
-        Query query = em.createQuery("SELECT i FROM MenuItem i WHERE i.restaurant = :restaurant");
+    public List<MenuItem> getByMenuItemsByRestaurant(Restaurant restaurant, String orderBy, boolean ascending, EntityManager em) {
+        String queryString = "SELECT i FROM MenuItem i WHERE i.restaurant = :restaurant";
+        
+        if (orderBy.equals("category")) {
+            queryString += "  ORDER BY i.category ";
+        } else if (orderBy.equals("type")){
+            queryString += "  ORDER BY i.type ";
+        } else if (orderBy.equals("price")){
+            queryString += "  ORDER BY i.price ";
+        } else if (orderBy.equals("name")){
+            queryString += "  ORDER BY i.name ";
+        }
+
+        if (ascending) {
+            queryString += "ASC";
+        } else {
+            queryString += "DESC";
+        }
+        Query query = em.createQuery(queryString);
         query.setParameter("restaurant", restaurant);
         List<MenuItem> items = performQueryList(MenuItem.class, query);
         if( items == null ) {
