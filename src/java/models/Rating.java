@@ -43,7 +43,7 @@ public class Rating implements Serializable {
     @Id
     @ManyToOne
     private Rater rater;
-
+    
     public Date getRatingdate() {
         return ratingdate;
     }

@@ -61,6 +61,11 @@
                             <h:outputText value="#{menuItem.description}"/>
                         </h:column>
                         <h:column>
+                            <f:facet name="header">Average Rating</f:facet>
+                            <h:outputText value="Has not been rated" rendered="#{not menuItem.hasRating}" />
+                            <h:outputText value="#{menuItem.averageRating}" rendered="#{menuItem.hasRating}"/>
+                        </h:column>
+                        <h:column>
                             <b:commandButton value="View Item Ratings" look="primary" type="command" actionListener="#{viewItemRatingsBean.viewMenuItemRatings(menuItem)}"/>
                         </h:column>
                      </h:dataTable>

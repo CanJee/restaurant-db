@@ -33,7 +33,7 @@ public class RatingItem implements Serializable {
     @Column(nullable = false)
     private int rating;
     @Column(nullable = false)
-    private String comment;
+    private String comments;
     @ManyToOne(fetch = FetchType.EAGER)
     private MenuItem menuitem;
     @Id
@@ -64,12 +64,12 @@ public class RatingItem implements Serializable {
         this.rating = rating;
     }
 
-    public String getComment() {
-        return comment;
+    public String getComments() {
+        return comments;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setComments(String comment) {
+        this.comments = comment;
     }
 
     public MenuItem getMenuitem() {

@@ -91,4 +91,16 @@ public class RatingFacade extends BaseFacade{
         return items;
     }
     
+    public List<Rating> getRatingsByRater(Rater rater, String orderBy, boolean ascending, EntityManager em) {
+        String queryString = "SELECT r FROM Rating r WHERE r.rater = :rater";
+        
+        Query query = em.createQuery(queryString);
+        query.setParameter("rater", rater);
+        List<Rating> items = performQueryList(Rating.class, query);
+        if( items == null ) {
+            items = new ArrayList<Rating>();
+        }
+
+        return items;
+    }
 }

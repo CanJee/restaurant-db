@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <h:head>
+        <title>View Raters</title>
+        <meta name="CanJee" content="Can Jee"></meta>
+    </h:head>
+    <h:body>
+
+        <ui:composition template="./template2.xhtml">
+
+            <ui:define name="content">
+                <f:view>
+                    <h:form id="pagedResults" prependId="false" >                     
+                    <c:if test="#{viewRaterBean.raters.size() == 0}">
+                            <h:outputText value="There are no raters with ratings to display." />
+                    </c:if>
+                    <c:if test="#{viewRaterBean.raters.size() > 0}">
+                    <h:outputLabel id="orderByLabel" for="orderBy" value="Order By:" />
+                    <h:dataTable id="rater_table" cellpadding="10" value="#{viewRaterBean.raters}"
+                                  var="raters" border="1">
+                         <h:column>
+                            <f:facet name="header">Name</f:facet>
+                            <h:outputText value="#{raters.userAccount.firstname} #{raters.userAccount.lastname}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Total Number of Ratings</f:facet>
+                            <h:outputText value="#{raters.totalNumberRating}"/>
+                        </h:column>
+                        <h:column>
+                            <b:commandButton value="View Restaurant Ratings" look="primary" type="command" actionListener="#{viewRaterRatingBean.viewRaterRatings(raters)}"/>
+                        </h:column>
+                        <h:column>
+                            <b:commandButton value="View Menu Item Ratings" look="primary" type="command" actionListener="#{viewRaterRatingsBean.viewLocationRatings(location)}"/>
+                        </h:column>
+                     </h:dataTable>
+                    </c:if>
+                </h:form>
+                </f:view>
+        </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>

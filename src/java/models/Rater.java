@@ -29,6 +29,35 @@ public class Rater extends User {
     private List<Rating> ratings;
     @OneToMany(fetch=FetchType.EAGER)
     private List<RatingItem> itemratings;
+    private int totalNumberRating;
+    private int totalNumberRestaurantRating;
+    private int totalNumberItemRating;
+    
+    public int getTotalNumberRestaurantRating() {
+        int total = ratings.size();
+        System.out.println(total);
+        return total;
+    }
+    public int getTotalNumberItemRating() {
+        int total = itemratings.size();
+        return total;
+    }
+    public int getTotalNumberRating() {
+        int total = ratings.size()+itemratings.size();
+        return total;
+    }
+
+    public void setTotalNumberRestaurantRating(int totalNumberRestaurantRating) {
+        this.totalNumberRestaurantRating = totalNumberRestaurantRating;
+    }
+
+    public void setTotalNumberItemRating(int totalNumberItemRating) {
+        this.totalNumberItemRating = totalNumberItemRating;
+    }
+    
+    public void setTotalNumberRating(int rating){
+        totalNumberRating = rating;
+    }
 
     public List<Rating> getRatings() {
         return ratings;

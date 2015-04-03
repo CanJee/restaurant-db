@@ -16,6 +16,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import models.MenuItem;
 import models.Restaurant;
+import models.Rater;
 
 /**
  *

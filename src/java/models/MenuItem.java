@@ -43,7 +43,37 @@ public class MenuItem implements Serializable {
     private Restaurant restaurant;
     @OneToMany(fetch = FetchType.EAGER)
     private List<RatingItem> ratings;
+    private int averageRating;
+    private boolean hasRating;
 
+    public boolean isHasRating() {
+        getAverageRating();
+        return hasRating;
+    }
+
+    public void setHasRating(boolean hasRating) {
+        this.hasRating = hasRating;
+    }
+
+    public int getAverageRating() {
+        int count;
+        int total = 0;
+        for(count = 0; count < ratings.size(); count++)
+        {
+            total += ratings.get(count).getRating();
+        }
+        if (count == 0)
+        {
+            hasRating = false;
+            return -1;
+        }
+        else
+        {
+            hasRating = true;
+            return total/count;
+        }
+    }
+    
     public List<RatingItem> getRatings() {
         return ratings;
     }

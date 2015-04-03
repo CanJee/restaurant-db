@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
+import java.sql.Date;
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -20,6 +21,8 @@ import models.Rater;
 import models.Owner;
 import models.Restaurant;
 import models.UserAccount;
+import models.RatingItem;
+
 
 
 @WebServlet
@@ -47,7 +50,9 @@ public class TestDataServlet extends HttpServlet {
             
             createRestaurants(owner);
             addLocation(owner, restaurant1);
-            addMenuItem(restaurant1);
+            MenuItem item = addMenuItem(restaurant1);
+            addMenuItemRating(item,rater);            
+            
             
             utx.commit();
         } catch (Exception e) {
@@ -84,6 +89,27 @@ public class TestDataServlet extends HttpServlet {
         account.setUsername("rater");
         account.setFirstname("Rater1");
         account.setLastname("Rater1");
+        setPassword(account, "test");
+        account.setReputation(1);
+        account.setType("online");
+        account.setJoindate(sqlDate);
+
+        Rater user = new Rater();
+        user.setUserAccount(account);
+
+        em.persist(account);
+        em.persist(user);
+        return user;
+    }
+    
+    private Rater createSecondRater() {
+        java.util.Calendar cal = Calendar.getInstance();
+        java.sql.Date sqlDate = new java.sql.Date(cal.getTime().getTime());
+        UserAccount account = new UserAccount();
+        account.setEmail("rater2@example.com");
+        account.setUsername("rater2");
+        account.setFirstname("Rater2");
+        account.setLastname("Rater2");
         setPassword(account, "test");
         account.setReputation(1);
         account.setType("online");
@@ -143,7 +169,7 @@ public class TestDataServlet extends HttpServlet {
         em.persist(location);
     }
     
-    private void addMenuItem(Restaurant restaurant){
+    private MenuItem addMenuItem(Restaurant restaurant){
         MenuItem item = new MenuItem();
         item.setCategory("main");
         item.setName("Cheese Burger");
@@ -152,6 +178,20 @@ public class TestDataServlet extends HttpServlet {
         item.setPrice(5.75);
         item.setRestaurant(restaurant);
         em.persist(item);
+        
+        return item;
+    }
+    
+    private void addMenuItemRating(MenuItem menuItem, Rater rate){
+        RatingItem rating = new RatingItem();
+        rating.setRating(3);
+        rating.setComments("test");
+        rating.setRater(rate);
+        rating.setMenuitem(menuItem);
+        Date test = new Date(2014,06,15);
+        rating.setVisitdate(test);
+        rating.setRatingdate(test);
+        em.persist(rating);
     }
     
     public boolean setPassword(UserAccount userAccount, String password) {

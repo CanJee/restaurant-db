@@ -21,7 +21,9 @@ import models.Location;
 import models.MenuItem;
 import models.RatingItem;
 import models.Rater;
+import models.Rating;
 import models.Restaurant;
+
 
 
 
@@ -64,6 +66,43 @@ public class MenuItemRatingFacade extends BaseFacade{
                 alreadyRatedForDate = true;
         }
         return alreadyRatedForDate;
+    }
+    
+    public List<RatingItem> getRatingsByMenuItem(MenuItem menuItem, String orderBy, boolean ascending, EntityManager em) {
+        String queryString = "SELECT r FROM RatingItem r WHERE r.menuitem = :menuitem";
+        
+        if (orderBy.equals("rating")) {
+            queryString += "  ORDER BY r.rating ";
+        } else if (orderBy.equals("visitdate")){
+            queryString += "  ORDER BY r.visitdate ";
+        }
+            
+        if (ascending) {
+            queryString += "ASC";
+        } else {
+            queryString += "DESC";
+        }
+        Query query = em.createQuery(queryString);
+        query.setParameter("menuitem", menuItem);
+        List<RatingItem> items = performQueryList(RatingItem.class, query);
+        if( items == null ) {
+            items = new ArrayList<RatingItem>();
+        }
+
+        return items;
+    }    
+    
+    public List<RatingItem> getRatingByRater(Rater rater, String orderBy, boolean ascending, EntityManager em) {
+        String queryString = "SELECT i FROM RatingItem i WHERE i.rater = :rater";
+        
+        Query query = em.createQuery(queryString);
+        query.setParameter("rater", rater);
+        List<RatingItem> items = performQueryList(RatingItem.class, query);
+        if( items == null ) {
+            items = new ArrayList<RatingItem>();
+        }
+
+        return items;
     }
     
 }

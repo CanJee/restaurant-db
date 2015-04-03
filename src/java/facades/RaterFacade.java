@@ -5,6 +5,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import java.util.List;
 import models.Rater;
 import models.UserAccount;
 
@@ -17,5 +18,12 @@ public class RaterFacade extends BaseFacade {
         query.setParameter("userAccount", account);
         return performQuery(Rater.class, query);
     }
+    
+    public List<Rater> getAll(EntityManager em) {
+        Query query = em.createQuery("SELECT r FROM Rater r");
+        return performQueryList(Rater.class, query);
+    }
+    
+    
     
 }

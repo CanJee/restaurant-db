@@ -146,7 +146,7 @@ public class AddRatingItemBean extends BaseBean{
         RatingItem ratingItem = new RatingItem();
         Rater ratingRater = sessionBean.getRater();
         
-        ratingItem.setComment(comments);
+        ratingItem.setComments(comments);
         ratingItem.setRating(rating);
         ratingItem.setRatingdate(currentSqlDate);
         ratingItem.setMenuitem(item);
