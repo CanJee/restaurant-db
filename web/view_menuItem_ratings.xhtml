@@ -27,6 +27,7 @@
                         <c:if test="#{viewItemRatingsBean.ratingsCount > 0}">
                     <h:outputLabel id="orderByLabel" for="orderBy" value="Order By:" />
                     <h:selectOneMenu id="orderBy" class="form-control selectMenu" value="#{viewItemRatingsBean.orderBy}" valueChangeListener="#{viewItemRatingsBean.orderedByChanged}">
+                        <f:selectItem itemValue="ratingdate" itemLabel="Rating Date" />
                         <f:selectItem itemValue="rating" itemLabel="Rating" />
                         <f:selectItem itemValue="visitdate" itemLabel="Visit Date" />
                         <f:ajax event="change" execute="@form" render="menuRating_table"/>
@@ -49,7 +50,7 @@
                             <h:outputText value="#{menuItemRating.ratingdate}"/>
                         </h:column>
                         <h:column>
-                            <f:facet name="header">Price Rating</f:facet>
+                            <f:facet name="header">Item Rating</f:facet>
                             <h:outputText value="#{menuItemRating.rating}"/>
                         </h:column>
                         <h:column>

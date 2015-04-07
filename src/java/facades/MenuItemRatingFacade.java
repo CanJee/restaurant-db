@@ -71,10 +71,12 @@ public class MenuItemRatingFacade extends BaseFacade{
     public List<RatingItem> getRatingsByMenuItem(MenuItem menuItem, String orderBy, boolean ascending, EntityManager em) {
         String queryString = "SELECT r FROM RatingItem r WHERE r.menuitem = :menuitem";
         
-        if (orderBy.equals("rating")) {
-            queryString += "  ORDER BY r.rating ";
+        if (orderBy.equals("ratingdate")) {
+            queryString += "  ORDER BY r.ratingdate ";
         } else if (orderBy.equals("visitdate")){
             queryString += "  ORDER BY r.visitdate ";
+        } else if (orderBy.equals("rating")){
+            queryString += "  ORDER BY r.rating ";
         }
             
         if (ascending) {

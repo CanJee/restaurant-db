@@ -183,14 +183,15 @@ public class TestDataServlet extends HttpServlet {
     }
     
     private void addMenuItemRating(MenuItem menuItem, Rater rate){
+        java.util.Calendar cal = Calendar.getInstance();
+        java.sql.Date sqlDate = new java.sql.Date(cal.getTime().getTime());
         RatingItem rating = new RatingItem();
         rating.setRating(3);
         rating.setComments("test");
         rating.setRater(rate);
         rating.setMenuitem(menuItem);
-        Date test = new Date(2014,06,15);
-        rating.setVisitdate(test);
-        rating.setRatingdate(test);
+        rating.setVisitdate(sqlDate);
+        rating.setRatingdate(sqlDate);
         em.persist(rating);
     }
     

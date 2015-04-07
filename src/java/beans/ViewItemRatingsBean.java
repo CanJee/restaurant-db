@@ -30,12 +30,20 @@ public class ViewItemRatingsBean extends BaseBean{
     @ManagedProperty(value="#{menuItemRatingFacade}")
     MenuItemRatingFacade menuItemRatingFacade;
     
-    private String orderBy = "rating";
+    private String orderBy = "ratingdate";
     private boolean ascending = true;
     private List<MenuItem> menuItems;
     private MenuItem menuItem;
     private List<RatingItem> menuItemRatings;
     private int ratingsCount;
+
+    public MenuItemRatingFacade getMenuItemRatingFacade() {
+        return menuItemRatingFacade;
+    }
+
+    public void setMenuItemRatingFacade(MenuItemRatingFacade menuItemRatingFacade) {
+        this.menuItemRatingFacade = menuItemRatingFacade;
+    }
 
     public void orderedByChanged (ValueChangeEvent event){
         orderBy = event.getNewValue().toString();
@@ -65,10 +73,6 @@ public class ViewItemRatingsBean extends BaseBean{
     public List<RatingItem> getMenuItemRatings() {
         menuItemRatings = menuItemRatingFacade.getRatingsByMenuItem(menuItem, orderBy, ascending, em);
         return menuItemRatings;
-    }    
-
-    public MenuItemRatingFacade getMenuItemRatingFacade() {
-        return menuItemRatingFacade;
     }
 
     public String getOrderBy() {
@@ -96,10 +100,6 @@ public class ViewItemRatingsBean extends BaseBean{
         return ratingsCount;
     }
 
-    public void setMenuItemRatingFacade(MenuItemRatingFacade menuItemRatingFacade) {
-        this.menuItemRatingFacade = menuItemRatingFacade;
-    }
-
     public void setOrderBy(String orderBy) {
         this.orderBy = orderBy;
     }
@@ -123,10 +123,5 @@ public class ViewItemRatingsBean extends BaseBean{
     public void setRatingsCount(int ratingsCount) {
         this.ratingsCount = ratingsCount;
     }
-    
-    
-    
-    
-    
     
 }
