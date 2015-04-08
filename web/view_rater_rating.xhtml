@@ -23,8 +23,30 @@
                     </c:if>
                     <c:if test="#{viewRaterRatingBean.ratings.size() > 0}">
                     <h:outputLabel id="orderByLabel" for="orderBy" value="Order By:" />
+                    <h:selectOneMenu id="orderBy" class="form-control selectMenu" value="#{viewRaterRatingBean.orderBy}" valueChangeListener="#{viewRaterRatingBean.orderedByChanged}">
+                        <f:selectItem itemValue="ratingdate" itemLabel="Rating Date" />
+                        <f:selectItem itemValue="visitdate" itemLabel="Visit Date" />
+                        <f:selectItem itemValue="foodrating" itemLabel="Food Rating" />
+                        <f:selectItem itemValue="pricerating" itemLabel="Price Rating" />
+                        <f:selectItem itemValue="moodrating" itemLabel="Mood Rating" />
+                        <f:selectItem itemValue="staffrating" itemLabel="Staff Rating" />
+                        <f:ajax event="change" execute="@form" render="rater_rating_table"/>
+                    </h:selectOneMenu>
+                    <h:selectOneMenu id="ascending" class="form-control selectMenu" value="#{viewRaterRatingBean.ascending}" valueChangeListener="#{viewRaterRatingBean.ascendingChanged}">
+                        <f:selectItem itemValue="true" itemLabel="Ascending" />
+                        <f:selectItem itemValue="false" itemLabel="Descending" />
+                        <f:ajax event="change" execute="@form" render="rater_rating_table"/>
+                    </h:selectOneMenu>
                     <h:dataTable id="rater_rating_table" cellpadding="10" value="#{viewRaterRatingBean.ratings}"
                                   var="ratings" border="1">
+                        <h:column>
+                            <f:facet name="header">Restaurant Name</f:facet>
+                            <h:outputText value="#{ratings.location.restaurant.name}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Restaurant Location</f:facet>
+                            <h:outputText value="#{ratings.location.streetaddress}"/>
+                        </h:column>
                         <h:column>
                             <f:facet name="header">Rating Date</f:facet>
                             <h:outputText value="#{ratings.ratingdate}"/>

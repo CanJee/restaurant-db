@@ -33,7 +33,21 @@ public class ViewRaterRatingBean extends BaseBean{
     private Rater rater;
     private List<Rating> ratings;
     
-    public List<Rating> getRatings(Rater rater) {
+    public void orderedByChanged (ValueChangeEvent event){
+        orderBy = event.getNewValue().toString();
+        getRatings();
+    }
+    
+    public void ascendingChanged (ValueChangeEvent event){
+        String test = event.getNewValue().toString();
+        if (test.equals("true"))
+            ascending = true;
+        else
+            ascending = false;
+        getRatings();
+    }
+    
+    public List<Rating> getRatings() {
         ratings = ratingFacade.getRatingsByRater(rater,orderBy, ascending, em);
         System.out.println(ratings.size());
         return ratings;
@@ -79,10 +93,6 @@ public class ViewRaterRatingBean extends BaseBean{
 
     public void setRater(Rater rater) {
         this.rater = rater;
-    }
-
-    public List<Rating> getRatings() {
-        return ratings;
     }
 
     public void setRaterRatings(List<Rating> raterRatings) {
