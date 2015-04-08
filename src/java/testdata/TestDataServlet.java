@@ -185,6 +185,7 @@ public class TestDataServlet extends HttpServlet {
     private void addMenuItemRating(MenuItem menuItem, Rater rate){
         java.util.Calendar cal = Calendar.getInstance();
         java.sql.Date sqlDate = new java.sql.Date(cal.getTime().getTime());
+        List<RatingItem> menuItemRatings = new ArrayList<RatingItem>();
         RatingItem rating = new RatingItem();
         rating.setRating(3);
         rating.setComments("test");
@@ -192,6 +193,11 @@ public class TestDataServlet extends HttpServlet {
         rating.setMenuitem(menuItem);
         rating.setVisitdate(sqlDate);
         rating.setRatingdate(sqlDate);
+        menuItemRatings.add(rating);
+        menuItem.setRatings(menuItemRatings);
+        rate.setItemratings(menuItemRatings);
+        em.persist(menuItem);
+        em.persist(rate);
         em.persist(rating);
     }
     
