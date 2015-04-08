@@ -33,6 +33,7 @@ public class RatingFacade extends BaseFacade{
             utx.begin();
             java.sql.Date sqlVisitDate = new java.sql.Date(visitDate.getTime());
             rating.setVisitdate(sqlVisitDate);
+            rating.setLikes(0);
             List<Rating> locationRatings = location.getRatings();
             List<Rating> raterRatings = rater.getRatings();
             locationRatings.add(rating);
@@ -74,6 +75,8 @@ public class RatingFacade extends BaseFacade{
             queryString += "  ORDER BY r.moodrating ";
         } else if (orderBy.equals("staffrating")){
             queryString += "  ORDER BY r.staffrating ";
+        } else if (orderBy.equals("likes")){
+            queryString += "  ORDER BY r.likes ";
         }
 
         if (ascending) {
@@ -106,6 +109,8 @@ public class RatingFacade extends BaseFacade{
             queryString += "  ORDER BY r.moodrating ";
         } else if (orderBy.equals("staffrating")){
             queryString += "  ORDER BY r.staffrating ";
+        } else if (orderBy.equals("likes")){
+            queryString += "  ORDER BY r.likes ";
         }
         
         if (ascending) {

@@ -14,6 +14,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import models.Location;
+import models.Rater;
 import models.Rating;
 
 /**
@@ -33,6 +34,19 @@ public class ViewRatingsBean extends BaseBean{
     private Location location;
     private List<Rating> locationRatings;
     private int ratingsCount;
+    
+    public void addLike (Rating rating) {
+        try {
+            utx.begin();
+            Rater rater = sessionBean.getRater();
+            rating.setLikes(rating.getLikes()+1);
+            List<Rating> raterLikedRatings = rater.getLikedRatings();
+            raterLikedRatings.add(rating);
+            em.merge(rater);
+            em.merge(rating);
+            utx.commit();
+        } catch (Exception e) {}
+    }
 
     public Location getLocation() {
         return location;

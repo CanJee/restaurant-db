@@ -193,6 +193,7 @@ public class TestDataServlet extends HttpServlet {
         rating.setMenuitem(menuItem);
         rating.setVisitdate(sqlDate);
         rating.setRatingdate(sqlDate);
+        rating.setLikes(0);
         menuItemRatings.add(rating);
         menuItem.setRatings(menuItemRatings);
         rate.setItemratings(menuItemRatings);

@@ -151,6 +151,7 @@ public class AddRatingItemBean extends BaseBean{
         ratingItem.setRatingdate(currentSqlDate);
         ratingItem.setMenuitem(item);
         ratingItem.setRater(ratingRater);
+        ratingItem.setLikes(0);
         
         if (menuItemRatingFacade.alreadyRatedForVisitDate(visitDate, ratingRater, item)){
             isError = true;

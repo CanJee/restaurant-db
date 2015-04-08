@@ -38,11 +38,21 @@ public class Rating implements Serializable {
     private int staffrating;
     @Column(nullable = false)
     private String comments;
+    @Column(nullable = false)
+    private int likes;
     @ManyToOne
     private Location location;
     @Id
     @ManyToOne
     private Rater rater;
+
+    public int getLikes() {
+        return likes;
+    }
+
+    public void setLikes(int likes) {
+        this.likes = likes;
+    }
     
     public Date getRatingdate() {
         return ratingdate;
