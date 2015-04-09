@@ -5,9 +5,8 @@
  */
 package beans;
 
-import facades.RaterFacade;
-import facades.RatingFacade;
 import facades.MenuItemRatingFacade;
+import facades.MenuItemFacade;
 import facades.RestaurantFacade;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,43 +16,31 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
-import models.Location;
-import models.Rater;
-import models.Rating;
 import models.RatingItem;
+import models.MenuItem;
 import models.Restaurant;
+import models.Rater;
 
 /**
  *
- * @author Can Jee
+ * @author Alan
  */
 @ManagedBean
 @SessionScoped
-public class ViewRaterBean extends BaseBean{
+public class ViewRaterMenuItemRatingBean extends BaseBean{
     
-    @ManagedProperty(value="#{raterFacade}")
-    RaterFacade raterFacade;
-    RatingFacade ratingFacade;
+    @ManagedProperty(value="#{enuItemRatingFacade}")
     MenuItemRatingFacade menuItemRatingFacade;
     
-    private String orderBy = "name";
+    private String orderBy = "ratingdate";
     private boolean ascending = true;
-    private List<Rater> raters;
-    private List<Rating> ratings;
+    private Rater rater;
     private List<RatingItem> itemRatings;
-    private int totalNumberRating;
-    private int totalNumberItemRating;
-        
-    public int getTotalNumberRating() {
-        return ratings.size();
-    }
-
-    public int getTotalNumberItemRating() {
-        return itemRatings.size();
-    }
+    private int numItemRatings;
+    
     public void orderedByChanged (ValueChangeEvent event){
         orderBy = event.getNewValue().toString();
-        getRaters();
+        getItemRatings();
     }
     
     public void ascendingChanged (ValueChangeEvent event){
@@ -62,44 +49,30 @@ public class ViewRaterBean extends BaseBean{
             ascending = true;
         else
             ascending = false;
-        getRaters();
+        getItemRatings();
     }
     
+    public int getNumItemRatings(){
+        numItemRatings = itemRatings.size();
+        return numItemRatings;
+    }
     
-    public List<Rater> getRaters() {
-        raters = raterFacade.getAll(orderBy,ascending,em);
-        System.out.println(raters.size());
-        return raters;
-    }
-        
-    public List<Rating> getRatings(Rater rater) {
-        ratings = ratingFacade.getRatingsByRater(rater,orderBy, ascending, em);
-        System.out.println(ratings.size());
-        return ratings;
-    }
-     
     public List<RatingItem> getItemRatings(Rater rater) {
         itemRatings = menuItemRatingFacade.getRatingByRater(rater,orderBy, ascending, em);
         System.out.println(itemRatings.size());
         return itemRatings;
     }
-
-    public RaterFacade getRaterFacade() {
-        return raterFacade;
+    
+    public void viewMenuItemRatings (Rater rate) {
+        this.rater = rate;
+        itemRatings = rater.getItemratings();
+        
+        ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+        try {
+        context.redirect(context.getRequestContextPath() + "/view_rater_menuitems_rating.xhtml");
+        } catch (Exception e) {}
     }
-
-    public void setRaterFacade(RaterFacade raterFacade) {
-        this.raterFacade = raterFacade;
-    }
-
-    public RatingFacade getRatingFacade() {
-        return ratingFacade;
-    }
-
-    public void setRatingFacade(RatingFacade ratingFacade) {
-        this.ratingFacade = ratingFacade;
-    }
-
+    
     public MenuItemRatingFacade getMenuItemRatingFacade() {
         return menuItemRatingFacade;
     }
@@ -124,12 +97,12 @@ public class ViewRaterBean extends BaseBean{
         this.ascending = ascending;
     }
 
-    public List<Rating> getRatings() {
-        return ratings;
+    public Rater getRater() {
+        return rater;
     }
 
-    public void setRatings(List<Rating> ratings) {
-        this.ratings = ratings;
+    public void setRater(Rater rater) {
+        this.rater = rater;
     }
 
     public List<RatingItem> getItemRatings() {
@@ -139,15 +112,6 @@ public class ViewRaterBean extends BaseBean{
     public void setItemRatings(List<RatingItem> itemRatings) {
         this.itemRatings = itemRatings;
     }
-
-    public void setTotalNumberRating(int totalNumberRating) {
-        this.totalNumberRating = totalNumberRating;
-    }
-
-    public void setTotalNumberItemRating(int totalNumberItemRating) {
-        this.totalNumberItemRating = totalNumberItemRating;
-    }
-    
     
     
 }
