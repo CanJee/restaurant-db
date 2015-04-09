@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <h:head>
+        <title>View Location Ratings</title>
+        <meta name="CanJee" content="Can Jee"></meta>
+    </h:head>
+    <h:body>
+
+        <ui:composition template="./template2.xhtml">
+
+            <ui:define name="content">
+                <f:view>
+                    <h:form id="pagedResults" prependId="false" >
+                        <h2 class="form-signin-heading">Ratings for restaurant #{viewRestaurantRatingBean.restaurant.name}
+                        </h2>
+                        <c:if test="#{viewRestaurantRatingBean.ratingCount == 0}">
+                            <h:outputText value="There are no ratings to display." />
+                        </c:if>
+                        <c:if test="#{viewRestaurantRatingBean.ratingCount > 0}">
+                    <h:outputLabel id="orderByLabel" for="orderBy" value="Order By:" />
+                    <h:selectOneMenu id="orderBy" class="form-control selectMenu" value="#{viewRestaurantRatingBean.orderBy}" valueChangeListener="#{viewRestaurantRatingBean.orderedByChanged}">
+                        <f:selectItem itemValue="ratingdate" itemLabel="Rating Date" />
+                        <f:selectItem itemValue="visitdate" itemLabel="Visit Date" />
+                        <f:selectItem itemValue="foodrating" itemLabel="Food Rating" />
+                        <f:selectItem itemValue="pricerating" itemLabel="Price Rating" />
+                        <f:selectItem itemValue="moodrating" itemLabel="Mood Rating" />
+                        <f:selectItem itemValue="staffrating" itemLabel="Staff Rating" />
+                        <f:ajax event="change" execute="@form" render="restaurantratings_table"/>
+                    </h:selectOneMenu>
+                    
+                    <h:selectOneMenu id="ascending" class="form-control selectMenu" value="#{viewRestaurantRatingBean.ascending}" valueChangeListener="#{viewRestaurantRatingBean.ascendingChanged}">
+                        <f:selectItem itemValue="true" itemLabel="Ascending" />
+                        <f:selectItem itemValue="false" itemLabel="Descending" />
+                        <f:ajax event="change" execute="@form" render="restaurantratings_table"/>
+                    </h:selectOneMenu>
+                    
+                    <h:dataTable id="restaurantratings_table" cellpadding="10" value="#{viewRestaurantRatingBean.rating}"
+                                  var="rating" border="1">
+                        <h:column>
+                            <f:facet name="header">Rater Name</f:facet>
+                            <h:outputText value="#{rating.rater.userAccount.firstname}, #{rating.rater.userAccount.lastname}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Location ID</f:facet>
+                            <h:outputText value="#{rating.location.streetaddress} #{rating.location.province}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Rating Date</f:facet>
+                            <h:outputText value="#{rating.ratingdate}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Price Rating</f:facet>
+                            <h:outputText value="#{rating.pricerating}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Food Rating</f:facet>
+                            <h:outputText value="#{rating.foodrating}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Mood Rating</f:facet>
+                            <h:outputText value="#{rating.moodrating}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Staff Rating</f:facet>
+                            <h:outputText value="#{rating.staffrating}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Visit Date</f:facet>
+                            <h:outputText value="#{rating.visitdate}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Comments</f:facet>
+                            <h:outputText value="#{rating.comments}"/>
+                        </h:column>
+                     </h:dataTable>
+                    </c:if>
+                </h:form>
+                </f:view>
+        </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>

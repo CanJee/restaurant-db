@@ -18,6 +18,7 @@ import javax.persistence.Query;
 import models.Location;
 import models.Rating;
 import models.Rater;
+import models.Restaurant;
 
 /**
  *
@@ -83,6 +84,39 @@ public class RatingFacade extends BaseFacade{
         }
         Query query = em.createQuery(queryString);
         query.setParameter("location", location);
+        List<Rating> items = performQueryList(Rating.class, query);
+        if( items == null ) {
+            items = new ArrayList<Rating>();
+        }
+
+        return items;
+    }
+    
+    public List<Rating> getRatingsByRestaurant(Restaurant restaurant, String orderBy, boolean ascending, EntityManager em) {
+        String queryString = "SELECT r FROM Restaurant x, Location l, Rating r WHERE x = :restaurant AND x = l.restaurant "
+                + "AND r.location = l";
+        
+        if (orderBy.equals("ratingdate")) {
+            queryString += "  ORDER BY r.ratingdate ";
+        } else if (orderBy.equals("visitdate")){
+            queryString += "  ORDER BY r.visitdate ";
+        } else if (orderBy.equals("pricerating")){
+            queryString += "  ORDER BY r.pricerating ";
+        } else if (orderBy.equals("foodrating")){
+            queryString += "  ORDER BY r.foodrating ";
+        } else if (orderBy.equals("moodrating")){
+            queryString += "  ORDER BY r.moodrating ";
+        } else if (orderBy.equals("staffrating")){
+            queryString += "  ORDER BY r.staffrating ";
+        }
+
+        if (ascending) {
+            queryString += "ASC";
+        } else {
+            queryString += "DESC";
+        }
+        Query query = em.createQuery(queryString);
+        query.setParameter("restaurant", restaurant);
         List<Rating> items = performQueryList(Rating.class, query);
         if( items == null ) {
             items = new ArrayList<Rating>();
