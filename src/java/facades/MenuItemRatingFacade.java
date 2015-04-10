@@ -97,6 +97,22 @@ public class MenuItemRatingFacade extends BaseFacade{
     public List<RatingItem> getRatingByRater(Rater rater, String orderBy, boolean ascending, EntityManager em) {
         String queryString = "SELECT i FROM RatingItem i WHERE i.rater = :rater";
         
+        if (orderBy.equals("itemname")) {
+            queryString += "  ORDER BY i.name ";
+        } else if (orderBy.equals("rating")){
+            queryString += "  ORDER BY i.rating ";
+        }else if (orderBy.equals("visitdate")){
+            queryString += "  ORDER BY i.visitdate ";
+        } else if (orderBy.equals("ratingdate")){
+            queryString += "  ORDER BY i.ratingdate ";
+        }
+            
+        if (ascending) {
+            queryString += "ASC";
+        } else {
+            queryString += "DESC";
+        }
+        
         Query query = em.createQuery(queryString);
         query.setParameter("rater", rater);
         List<RatingItem> items = performQueryList(RatingItem.class, query);
