@@ -19,8 +19,22 @@ public class RaterFacade extends BaseFacade {
         return performQuery(Rater.class, query);
     }
     
-    public List<Rater> getAll(EntityManager em) {
-        Query query = em.createQuery("SELECT r FROM Rater r");
+    public List<Rater> getAll(String orderBy, Boolean ascending, EntityManager em) {
+        String queryString = "SELECT r FROM Rater r";
+        
+        if (orderBy.equals("name")) {
+            queryString += "  ORDER BY r.userAccount.lastname ";
+        } else if (orderBy.equals("reputation")){
+            queryString += "  ORDER BY r.totalNumberRating ";
+        }
+
+        if (ascending) {
+            queryString += "ASC";
+        } else {
+            queryString += "DESC";
+        }
+        
+        Query query = em.createQuery(queryString);
         return performQueryList(Rater.class, query);
     }
     
