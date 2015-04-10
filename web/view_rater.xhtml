@@ -22,7 +22,18 @@
                             <h:outputText value="There are no raters with ratings to display." />
                     </c:if>
                     <c:if test="#{viewRaterBean.raters.size() > 0}">
-                    <h:outputLabel id="orderByLabel" for="orderBy" value="Order By:" />
+                                        <h:outputLabel id="orderByLabel" for="orderBy" value="Order By:" />
+                    <h:selectOneMenu id="orderBy" class="form-control selectMenu" value="#{viewRaterBean.orderBy}" valueChangeListener="#{viewRaterBean.orderedByChanged}">
+                        <f:selectItem itemValue="name" itemLabel="Name" />
+                        <f:selectItem itemValue="category" itemLabel="Reputation" />
+                        <f:ajax event="change" execute="@form" render="rater_table"/>
+                    </h:selectOneMenu>
+                    
+                    <h:selectOneMenu id="ascending" class="form-control selectMenu" value="#{viewRaterBean.ascending}" valueChangeListener="#{viewRaterBean.ascendingChanged}">
+                        <f:selectItem itemValue="true" itemLabel="Ascending" />
+                        <f:selectItem itemValue="false" itemLabel="Descending" />
+                        <f:ajax event="change" execute="@form" render="rater_table"/>
+                    </h:selectOneMenu>
                     <h:dataTable id="rater_table" cellpadding="10" value="#{viewRaterBean.raters}"
                                   var="raters" border="1">
                          <h:column>
@@ -49,7 +60,7 @@
                             <b:commandButton value="View Restaurant Ratings" look="primary" type="command" actionListener="#{viewRaterRatingBean.viewRaterRatings(raters)}"/>
                         </h:column>
                         <h:column>
-                            <b:commandButton value="View Menu Item Ratings" look="primary" type="command" actionListener="#{viewRaterRatingsBean.viewLocationRatings(location)}"/>
+                            <b:commandButton value="View Menu Item Ratings" look="primary" type="command" actionListener="#{viewRaterMenuItemRatingBean.viewMenuItemRatings(raters)}"/>
                         </h:column>
                      </h:dataTable>
                     </c:if>
