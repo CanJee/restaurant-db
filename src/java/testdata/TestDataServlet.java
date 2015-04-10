@@ -19,6 +19,7 @@ import models.Location;
 import models.MenuItem;
 import models.Rater;
 import models.Owner;
+import models.Rating;
 import models.Restaurant;
 import models.UserAccount;
 import models.RatingItem;
@@ -49,9 +50,10 @@ public class TestDataServlet extends HttpServlet {
             Rater rater = createRater();
             
             createRestaurants(owner);
-            addLocation(owner, restaurant1);
+            Location loc = addLocation(owner, restaurant1);
             MenuItem item = addMenuItem(restaurant1);
             addMenuItemRating(item,rater);            
+            addLocationRating(loc, rater);
             
             
             utx.commit();
@@ -69,7 +71,6 @@ public class TestDataServlet extends HttpServlet {
         account.setFirstname("Owner1");
         account.setLastname("Owner1");
         setPassword(account, "test");
-        account.setReputation(1);
         account.setType("online");
         account.setJoindate(sqlDate);
 
@@ -90,11 +91,11 @@ public class TestDataServlet extends HttpServlet {
         account.setFirstname("Rater1");
         account.setLastname("Rater1");
         setPassword(account, "test");
-        account.setReputation(1);
         account.setType("online");
         account.setJoindate(sqlDate);
 
         Rater user = new Rater();
+        user.setReputation(1);
         user.setUserAccount(account);
 
         em.persist(account);
@@ -111,11 +112,11 @@ public class TestDataServlet extends HttpServlet {
         account.setFirstname("Rater2");
         account.setLastname("Rater2");
         setPassword(account, "test");
-        account.setReputation(1);
         account.setType("online");
         account.setJoindate(sqlDate);
 
         Rater user = new Rater();
+        user.setReputation(1);
         user.setUserAccount(account);
 
         em.persist(account);
@@ -151,7 +152,7 @@ public class TestDataServlet extends HttpServlet {
         em.persist(restaurant5);
     }
     
-    private void addLocation(Owner owner, Restaurant restaurant) {
+    private Location addLocation(Owner owner, Restaurant restaurant) {
         java.util.Calendar cal = Calendar.getInstance();
         java.sql.Date sqlDate = new java.sql.Date(cal.getTime().getTime());
         List<Location> ownerLocations = new ArrayList<Location>();
@@ -167,6 +168,7 @@ public class TestDataServlet extends HttpServlet {
         owner.setLocation(ownerLocations);
         em.persist(owner);
         em.persist(location);
+        return location;
     }
     
     private MenuItem addMenuItem(Restaurant restaurant){
@@ -199,6 +201,29 @@ public class TestDataServlet extends HttpServlet {
         rate.setItemratings(menuItemRatings);
         em.persist(menuItem);
         em.persist(rate);
+        em.persist(rating);
+    }
+    
+    private void addLocationRating (Location location, Rater rate) {
+        java.util.Calendar cal = Calendar.getInstance();
+        java.sql.Date sqlDate = new java.sql.Date(cal.getTime().getTime());
+        List<Rating> locationRatings = new ArrayList<Rating>();
+        Rating rating = new Rating();
+        rating.setPricerating(6);
+        rating.setFoodrating(8);
+        rating.setMoodrating(3);
+        rating.setStaffrating(7);
+        rating.setComments("test");
+        rating.setRater(rate);
+        rating.setLocation(location);
+        rating.setVisitdate(sqlDate);
+        rating.setRatingdate(sqlDate);
+        rating.setLikes(0);
+        locationRatings.add(rating);
+        location.setRatings(locationRatings);
+        rate.setRatings(locationRatings);
+        em.merge(location);
+        em.merge(rate);
         em.persist(rating);
     }
     

@@ -6,6 +6,7 @@
 package beans;
 
 import facades.RatingFacade;
+import java.util.ArrayList;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -34,18 +35,53 @@ public class ViewRatingsBean extends BaseBean{
     private Location location;
     private List<Rating> locationRatings;
     private int ratingsCount;
+    private String status;
+    private boolean isError;
+
+    public boolean isIsError() {
+        return isError;
+    }
+
+    public void setIsError(boolean isError) {
+        this.isError = isError;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
     
     public void addLike (Rating rating) {
+        System.out.println("test");
         try {
-            utx.begin();
             Rater rater = sessionBean.getRater();
-            rating.setLikes(rating.getLikes()+1);
             List<Rating> raterLikedRatings = rater.getLikedRatings();
-            raterLikedRatings.add(rating);
-            em.merge(rater);
-            em.merge(rating);
-            utx.commit();
-        } catch (Exception e) {}
+            if (raterLikedRatings != null && raterLikedRatings.contains(rating)) {
+                isError = true;
+                status = "You have already liked this rating";
+            }
+            else {
+                utx.begin();
+                System.out.println("test2");
+                isError = false;
+                rating.setLikes(rating.getLikes()+1);
+                if (raterLikedRatings == null) {
+                    raterLikedRatings = new ArrayList<Rating>();
+                }
+                raterLikedRatings.add(rating);
+                rater.setLikedRatings(raterLikedRatings);
+                rating.getRater().setReputation(rating.getRater().getReputation()+1);
+                em.merge(rating);
+                utx.commit();
+            }
+        } catch (Exception e) {
+            isError = true;
+            status = "Exception occured";
+            System.out.println(e);
+        }
     }
 
     public Location getLocation() {
@@ -57,6 +93,7 @@ public class ViewRatingsBean extends BaseBean{
     }
     
     public void viewLocationRatings (Location location) {
+        isError = false;
         this.location = location;
         locationRatings = location.getRatings();
         

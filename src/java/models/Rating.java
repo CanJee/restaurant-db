@@ -8,8 +8,11 @@ package models;
 import java.io.Serializable;
 import java.sql.Date;
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -23,6 +26,9 @@ import javax.persistence.Table;
 @Table(name="rating_6795550")
 public class Rating implements Serializable {
     private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
     @Column(nullable = false, columnDefinition = "DATE DEFAULT CURRENT_DATE")
     private Date ratingdate;
     @Id
@@ -45,6 +51,14 @@ public class Rating implements Serializable {
     @Id
     @ManyToOne
     private Rater rater;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public int getLikes() {
         return likes;
@@ -128,9 +142,8 @@ public class Rating implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 83 * hash + Objects.hashCode(this.visitdate);
-        hash = 83 * hash + Objects.hashCode(this.rater);
+        int hash = 3;
+        hash = 79 * hash + Objects.hashCode(this.id);
         return hash;
     }
 
@@ -143,10 +156,7 @@ public class Rating implements Serializable {
             return false;
         }
         final Rating other = (Rating) obj;
-        if (!Objects.equals(this.visitdate, other.visitdate)) {
-            return false;
-        }
-        if (!Objects.equals(this.rater, other.rater)) {
+        if (!Objects.equals(this.id, other.id)) {
             return false;
         }
         return true;

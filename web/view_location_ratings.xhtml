@@ -33,6 +33,7 @@
                         <f:selectItem itemValue="pricerating" itemLabel="Price Rating" />
                         <f:selectItem itemValue="moodrating" itemLabel="Mood Rating" />
                         <f:selectItem itemValue="staffrating" itemLabel="Staff Rating" />
+                        <f:selectItem itemValue="likes" itemLabel="Rating Likes" />
                         <f:ajax event="change" execute="@form" render="ratings_table"/>
                     </h:selectOneMenu>
                     
@@ -41,6 +42,9 @@
                         <f:selectItem itemValue="false" itemLabel="Descending" />
                         <f:ajax event="change" execute="@form" render="ratings_table"/>
                     </h:selectOneMenu>
+                    <b:alert id="status1" severity="danger" rendered="#{viewRatingsBean.isError}"><b:iconAwesome name="warning" />
+                        #{viewRatingsBean.status}
+                    </b:alert>
                     
                     <h:dataTable id="ratings_table" cellpadding="10" value="#{viewRatingsBean.locationRatings}"
                                   var="locationRating" border="1">
@@ -83,7 +87,7 @@
                         <c:if test="#{sessionBean.rater}" >
                             <h:column>
                                 <b:commandButton value="Like Rating" look="primary" type="command" actionListener="#{viewRatingsBean.addLike(locationRating)}">
-                                    <f:ajax render="likes"/>
+                                    <f:ajax render="likes status1 status2"/>
                                 </b:commandButton>
                             </h:column>
                         </c:if>
