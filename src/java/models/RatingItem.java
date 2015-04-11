@@ -39,6 +39,15 @@ public class RatingItem implements Serializable {
     @Id
     @ManyToOne(fetch = FetchType.EAGER)
     private Rater rater;
+    private int likes;
+
+    public int getLikes() {
+        return likes;
+    }
+
+    public void setLikes(int likes) {
+        this.likes = likes;
+    }
 
     public Date getRatingdate() {
         return ratingdate;

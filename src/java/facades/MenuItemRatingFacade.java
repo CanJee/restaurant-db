@@ -77,6 +77,8 @@ public class MenuItemRatingFacade extends BaseFacade{
             queryString += "  ORDER BY r.visitdate ";
         } else if (orderBy.equals("rating")){
             queryString += "  ORDER BY r.rating ";
+        } else if (orderBy.equals("likes")){
+            queryString += "  ORDER BY r.likes ";
         }
             
         if (ascending) {

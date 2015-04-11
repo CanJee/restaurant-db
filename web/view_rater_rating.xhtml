@@ -30,6 +30,7 @@
                         <f:selectItem itemValue="pricerating" itemLabel="Price Rating" />
                         <f:selectItem itemValue="moodrating" itemLabel="Mood Rating" />
                         <f:selectItem itemValue="staffrating" itemLabel="Staff Rating" />
+                        <f:selectItem itemValue="likes" itemLabel="Rating Likes" />
                         <f:ajax event="change" execute="@form" render="rater_rating_table"/>
                     </h:selectOneMenu>
                     <h:selectOneMenu id="ascending" class="form-control selectMenu" value="#{viewRaterRatingBean.ascending}" valueChangeListener="#{viewRaterRatingBean.ascendingChanged}">
@@ -37,6 +38,9 @@
                         <f:selectItem itemValue="false" itemLabel="Descending" />
                         <f:ajax event="change" execute="@form" render="rater_rating_table"/>
                     </h:selectOneMenu>
+                    <b:alert id="status1" severity="danger" rendered="#{viewRaterRatingBean.isError}"><b:iconAwesome name="warning" />
+                        #{viewRaterRatingBean.status}
+                    </b:alert>
                     <h:dataTable id="rater_rating_table" cellpadding="10" value="#{viewRaterRatingBean.ratings}"
                                   var="ratings" border="1">
                         <h:column>
@@ -75,6 +79,17 @@
                             <f:facet name="header">Comments</f:facet>
                             <h:outputText value="#{ratings.comments}"/>
                         </h:column>
+                        <h:column>
+                            <f:facet name="header">Rating Likes</f:facet>
+                            <h:outputText id="likes" value="#{ratings.likes}"/>
+                        </h:column>
+                        <c:if test="#{sessionBean.rater}" >
+                            <h:column>
+                                <b:commandButton value="Like Rating" look="primary" type="command" actionListener="#{viewRaterRatingBean.addLike(ratings)}">
+                                    <f:ajax render="likes status1"/>
+                                </b:commandButton>
+                            </h:column>
+                        </c:if>
                      </h:dataTable>
                     </c:if>
                 </h:form>

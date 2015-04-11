@@ -33,8 +33,6 @@ public class UserAccount implements Serializable {
     @Column(nullable = false)
     private String type;
     @Column(nullable = false)
-    private int reputation;
-    @Column(nullable = false)
     private Date joindate;
     @Lob
     @Column(nullable = false)
@@ -50,14 +48,6 @@ public class UserAccount implements Serializable {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public int getReputation() {
-        return reputation;
-    }
-
-    public void setReputation(int reputation) {
-        this.reputation = reputation;
     }
 
     public Date getJoindate() {

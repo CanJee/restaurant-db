@@ -201,6 +201,7 @@ public class AddRatingBean extends BaseBean{
         rating.setRatingdate(currentSqlDate);
         rating.setRater(ratingRater);
         rating.setLocation(loc);
+        rating.setLikes(0);
         if (ratingFacade.alreadyRatedForVisitDate(visitDate, ratingRater, loc)){
             isError = true;
             status = "You have already entered a rating for this visit date";

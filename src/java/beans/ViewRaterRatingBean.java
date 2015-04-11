@@ -32,6 +32,24 @@ public class ViewRaterRatingBean extends BaseBean{
     private boolean ascending = true;
     private Rater rater;
     private List<Rating> ratings;
+    private boolean isError;
+    private String status;
+
+    public boolean isIsError() {
+        return isError;
+    }
+
+    public void setIsError(boolean isError) {
+        this.isError = isError;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
     
     public void orderedByChanged (ValueChangeEvent event){
         orderBy = event.getNewValue().toString();
@@ -99,6 +117,16 @@ public class ViewRaterRatingBean extends BaseBean{
         this.ratings = raterRatings;
     }
     
-    
+    public void addLike (Rating rating) {
+        Rater rater = sessionBean.getRater();
+        if (ratingFacade.alreadyLikedRating(rater, rating)) {
+            isError = true;
+            status = "You have already liked this rating";
+        }
+        else {
+            isError = false;
+            ratingFacade.addLikeForRating(rater, rating);
+        }
+    }
     
 }

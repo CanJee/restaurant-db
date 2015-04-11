@@ -30,7 +30,8 @@ public class UserAccountFacade extends BaseFacade {
             java.sql.Date sqlDate = new java.sql.Date(cal.getTime().getTime());
             
             UserAccount account = new UserAccount();
-            User user;
+            Owner owner;
+            Rater rater;
             
             account.setUsername(username);
             setPassword(account, password);
@@ -39,19 +40,22 @@ public class UserAccountFacade extends BaseFacade {
             account.setFirstname(firstname);
             account.setLastname(lastname);
             account.setType(rtype);
-            account.setReputation(1);
             account.setJoindate(sqlDate);
             
 
             if (type.equals("owner")) {
-                user = new Owner();
+                owner = new Owner();
+                owner.setUserAccount(account);
+                em.persist(account);
+                em.persist(owner);
             }
             else {
-                user = new Rater();
+                rater = new Rater();
+                rater.setUserAccount(account);
+                rater.setReputation(1);
+                em.persist(account);
+                em.persist(rater);
             }
-            user.setUserAccount(account);
-            em.persist(account);
-            em.persist(user);
             utx.commit();
             return true;
         } catch (Exception e) {

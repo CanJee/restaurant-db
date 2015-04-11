@@ -7,6 +7,7 @@ package models;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -14,6 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
 /**
@@ -25,6 +27,7 @@ import javax.persistence.OneToMany;
 public class Rater extends User {
     private static final long serialVersionUID = 1L;
     
+    private int reputation;
     @OneToMany(fetch=FetchType.EAGER)
     private List<Rating> ratings;
     @OneToMany(fetch=FetchType.EAGER)
@@ -32,6 +35,35 @@ public class Rater extends User {
     private int totalNumberRating;
     private int totalNumberRestaurantRating;
     private int totalNumberItemRating;
+    @OneToMany(fetch=FetchType.EAGER)
+    @JoinColumn(nullable = true)
+    private List<Rating> likedRatings;
+    @OneToMany(fetch=FetchType.EAGER)
+    private List<RatingItem> likedRatingItems;
+
+    public int getReputation() {
+        return reputation;
+    }
+
+    public void setReputation(int reputation) {
+        this.reputation = reputation;
+    }
+
+    public List<Rating> getLikedRatings() {
+        return likedRatings;
+    }
+
+    public void setLikedRatings(List<Rating> likedRatings) {
+        this.likedRatings = likedRatings;
+    }
+
+    public List<RatingItem> getLikedRatingItems() {
+        return likedRatingItems;
+    }
+
+    public void setLikedRatingItems(List<RatingItem> likedRatingItems) {
+        this.likedRatingItems = likedRatingItems;
+    }
     
     public int getTotalNumberRestaurantRating() {
         int total = ratings.size();
@@ -73,31 +105,6 @@ public class Rater extends User {
 
     public void setItemratings(List<RatingItem> itemratings) {
         this.itemratings = itemratings;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (getId() != null ? getId().hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Rater)) {
-            return false;
-        }
-        Rater other = (Rater) object;
-        if ((this.getId() == null && other.getId() != null) || (this.getId() != null && !this.getId().equals(other.getId()))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "models.Rater[ id=" + getId() + " ]";
     }
     
 }

@@ -34,6 +34,7 @@ public class RatingFacade extends BaseFacade{
             utx.begin();
             java.sql.Date sqlVisitDate = new java.sql.Date(visitDate.getTime());
             rating.setVisitdate(sqlVisitDate);
+            rating.setLikes(0);
             List<Rating> locationRatings = location.getRatings();
             List<Rating> raterRatings = rater.getRatings();
             locationRatings.add(rating);
@@ -75,6 +76,8 @@ public class RatingFacade extends BaseFacade{
             queryString += "  ORDER BY r.moodrating ";
         } else if (orderBy.equals("staffrating")){
             queryString += "  ORDER BY r.staffrating ";
+        } else if (orderBy.equals("likes")){
+            queryString += "  ORDER BY r.likes ";
         }
 
         if (ascending) {
@@ -140,6 +143,8 @@ public class RatingFacade extends BaseFacade{
             queryString += "  ORDER BY r.moodrating ";
         } else if (orderBy.equals("staffrating")){
             queryString += "  ORDER BY r.staffrating ";
+        } else if (orderBy.equals("likes")){
+            queryString += "  ORDER BY r.likes ";
         }
         
         if (ascending) {
@@ -155,5 +160,34 @@ public class RatingFacade extends BaseFacade{
         }
 
         return items;
+    }
+    
+    public boolean alreadyLikedRating (Rater rater, Rating rating) {
+        List<Rating> raterLikedRatings = rater.getLikedRatings();
+        if (raterLikedRatings != null && raterLikedRatings.contains(rating))
+            return true;
+        else
+            return false;
+    }
+    
+    public void addLikeForRating (Rater rater, Rating rating) {
+        try {
+            utx.begin();
+            Rater ratingRater = rating.getRater();
+            rating.setLikes(rating.getLikes()+1);
+            List<Rating> raterLikedRatings = rater.getLikedRatings();
+            if (raterLikedRatings == null) {
+                raterLikedRatings = new ArrayList<Rating>();
+            }
+            raterLikedRatings.add(rating);
+            rater.setLikedRatings(raterLikedRatings);
+            ratingRater.setReputation(ratingRater.getReputation()+1);
+            em.merge(rater);
+            em.merge(rating);
+            em.merge(ratingRater);
+            utx.commit();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 }

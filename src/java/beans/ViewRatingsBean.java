@@ -5,7 +5,9 @@
  */
 package beans;
 
+import facades.RaterFacade;
 import facades.RatingFacade;
+import java.util.ArrayList;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -14,6 +16,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import models.Location;
+import models.Rater;
 import models.Rating;
 
 /**
@@ -27,12 +30,53 @@ public class ViewRatingsBean extends BaseBean{
     @ManagedProperty(value="#{ratingFacade}")
     RatingFacade ratingFacade;
     
+    @ManagedProperty(value="#{raterFacade}")
+    RaterFacade raterFacade;
+    
     private String orderBy = "ratingdate";
     private boolean ascending = true;
     private List<Location> locations;
     private Location location;
     private List<Rating> locationRatings;
     private int ratingsCount;
+    private String status;
+    private boolean isError;
+
+    public RaterFacade getRaterFacade() {
+        return raterFacade;
+    }
+
+    public void setRaterFacade(RaterFacade raterFacade) {
+        this.raterFacade = raterFacade;
+    }
+
+    public boolean isIsError() {
+        return isError;
+    }
+
+    public void setIsError(boolean isError) {
+        this.isError = isError;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+    
+    public void addLike (Rating rating) {
+        Rater rater = sessionBean.getRater();
+        if (ratingFacade.alreadyLikedRating(rater, rating)) {
+            isError = true;
+            status = "You have already liked this rating";
+        }
+        else {
+            isError = false;
+            ratingFacade.addLikeForRating(rater, rating);
+        }
+    }
 
     public Location getLocation() {
         return location;
@@ -43,6 +87,7 @@ public class ViewRatingsBean extends BaseBean{
     }
     
     public void viewLocationRatings (Location location) {
+        isError = false;
         this.location = location;
         locationRatings = location.getRatings();
         
