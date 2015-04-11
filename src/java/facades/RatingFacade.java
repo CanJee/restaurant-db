@@ -127,4 +127,33 @@ public class RatingFacade extends BaseFacade{
 
         return items;
     }
+    
+    public boolean alreadyLikedRating (Rater rater, Rating rating) {
+        List<Rating> raterLikedRatings = rater.getLikedRatings();
+        if (raterLikedRatings != null && raterLikedRatings.contains(rating))
+            return true;
+        else
+            return false;
+    }
+    
+    public void addLikeForRating (Rater rater, Rating rating) {
+        try {
+            utx.begin();
+            Rater ratingRater = rating.getRater();
+            rating.setLikes(rating.getLikes()+1);
+            List<Rating> raterLikedRatings = rater.getLikedRatings();
+            if (raterLikedRatings == null) {
+                raterLikedRatings = new ArrayList<Rating>();
+            }
+            raterLikedRatings.add(rating);
+            rater.setLikedRatings(raterLikedRatings);
+            ratingRater.setReputation(ratingRater.getReputation()+1);
+            em.merge(rater);
+            em.merge(rating);
+            em.merge(ratingRater);
+            utx.commit();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
 }

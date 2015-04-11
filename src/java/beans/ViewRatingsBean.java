@@ -5,6 +5,7 @@
  */
 package beans;
 
+import facades.RaterFacade;
 import facades.RatingFacade;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +30,9 @@ public class ViewRatingsBean extends BaseBean{
     @ManagedProperty(value="#{ratingFacade}")
     RatingFacade ratingFacade;
     
+    @ManagedProperty(value="#{raterFacade}")
+    RaterFacade raterFacade;
+    
     private String orderBy = "ratingdate";
     private boolean ascending = true;
     private List<Location> locations;
@@ -37,6 +41,14 @@ public class ViewRatingsBean extends BaseBean{
     private int ratingsCount;
     private String status;
     private boolean isError;
+
+    public RaterFacade getRaterFacade() {
+        return raterFacade;
+    }
+
+    public void setRaterFacade(RaterFacade raterFacade) {
+        this.raterFacade = raterFacade;
+    }
 
     public boolean isIsError() {
         return isError;
@@ -55,32 +67,14 @@ public class ViewRatingsBean extends BaseBean{
     }
     
     public void addLike (Rating rating) {
-        System.out.println("test");
-        try {
-            Rater rater = sessionBean.getRater();
-            List<Rating> raterLikedRatings = rater.getLikedRatings();
-            if (raterLikedRatings != null && raterLikedRatings.contains(rating)) {
-                isError = true;
-                status = "You have already liked this rating";
-            }
-            else {
-                utx.begin();
-                System.out.println("test2");
-                isError = false;
-                rating.setLikes(rating.getLikes()+1);
-                if (raterLikedRatings == null) {
-                    raterLikedRatings = new ArrayList<Rating>();
-                }
-                raterLikedRatings.add(rating);
-                rater.setLikedRatings(raterLikedRatings);
-                rating.getRater().setReputation(rating.getRater().getReputation()+1);
-                em.merge(rating);
-                utx.commit();
-            }
-        } catch (Exception e) {
+        Rater rater = sessionBean.getRater();
+        if (ratingFacade.alreadyLikedRating(rater, rating)) {
             isError = true;
-            status = "Exception occured";
-            System.out.println(e);
+            status = "You have already liked this rating";
+        }
+        else {
+            isError = false;
+            ratingFacade.addLikeForRating(rater, rating);
         }
     }
 

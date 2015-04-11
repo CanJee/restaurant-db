@@ -31,7 +31,6 @@ public class Rating implements Serializable {
     private Long id;
     @Column(nullable = false, columnDefinition = "DATE DEFAULT CURRENT_DATE")
     private Date ratingdate;
-    @Id
     @Column(nullable = false)
     private Date visitdate;
     @Column(nullable = false)
@@ -48,7 +47,6 @@ public class Rating implements Serializable {
     private int likes;
     @ManyToOne
     private Location location;
-    @Id
     @ManyToOne
     private Rater rater;
 

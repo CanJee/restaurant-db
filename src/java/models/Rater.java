@@ -15,6 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
 /**
@@ -35,6 +36,7 @@ public class Rater extends User {
     private int totalNumberRestaurantRating;
     private int totalNumberItemRating;
     @OneToMany(fetch=FetchType.EAGER)
+    @JoinColumn(nullable = true)
     private List<Rating> likedRatings;
     @OneToMany(fetch=FetchType.EAGER)
     private List<RatingItem> likedRatingItems;

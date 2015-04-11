@@ -87,7 +87,7 @@
                         <c:if test="#{sessionBean.rater}" >
                             <h:column>
                                 <b:commandButton value="Like Rating" look="primary" type="command" actionListener="#{viewRatingsBean.addLike(locationRating)}">
-                                    <f:ajax render="likes status1 status2"/>
+                                    <f:ajax render="likes status1"/>
                                 </b:commandButton>
                             </h:column>
                         </c:if>
