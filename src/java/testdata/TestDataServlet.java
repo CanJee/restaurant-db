@@ -1,5 +1,6 @@
 package testdata;
 
+import facades.MenuItemFacade;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.Random;
 import java.sql.Date;
 import javax.annotation.Resource;
+import javax.faces.bean.ManagedProperty;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.servlet.annotation.WebServlet;
@@ -48,12 +50,104 @@ public class TestDataServlet extends HttpServlet {
             
             Owner owner = createOwner();
             Rater rater = createRater();
+            Rater user = createSecondRater();
             
             createRestaurants(owner);
-            Location loc = addLocation(owner, restaurant1);
-            MenuItem item = addMenuItem(restaurant1);
-            addMenuItemRating(item,rater);            
-            addLocationRating(loc, rater);
+            Location loc = addLocation(owner, restaurant1, "25 test drive", "Ottawa", "A0A 0A0", "ON" );
+            addLocationRating(loc,rater);
+            
+            Location loc2 = addLocation(owner, restaurant1, "23 test park", "Montreal", "A0A 0A1", "QC" );
+            Location loc3 = addLocation(owner, restaurant1, "3 principal", "Toronto", "A0A 0A2", "ON" );
+            
+            Location loc4 = addLocation(owner, restaurant2, "26 test drive", "Ottawa", "A0A 0A0", "ON" );
+            Location loc5 = addLocation(owner, restaurant2, "24 test park", "Montreal", "A0A 0A1", "QC" );
+            Location loc6 = addLocation(owner, restaurant2, "3 principal", "Toronto", "A0A 0A2", "ON" );
+            
+            Location loc7 = addLocation(owner, restaurant3, "27 test drive", "Ottawa", "A0A 0A0", "ON" );
+            Location loc8 = addLocation(owner, restaurant3, "28 test park", "Montreal", "A0A 0A1", "QC" );
+            Location loc9 = addLocation(owner, restaurant3, "4 principal", "Toronto", "A0A 0A2", "ON" );
+            
+            Location loc10 = addLocation(owner, restaurant4, "28 test drive", "Ottawa", "A0A 0A0", "ON" );
+            Location loc11 = addLocation(owner, restaurant4, "29 test park", "Montreal", "A0A 0A1", "QC" );
+            Location loc12 = addLocation(owner, restaurant4, "5 principal", "Toronto", "A0A 0A2", "ON" );
+            
+            Location loc13 = addLocation(owner, restaurant5, "29 test drive", "Ottawa", "A0A 0A0", "ON" );
+            Location loc14 = addLocation(owner, restaurant5, "30 test park", "Montreal", "A0A 0A1", "QC" );
+            Location loc15 = addLocation(owner, restaurant5, "6 principal", "Toronto", "A0A 0A2", "ON" );
+            
+            
+            MenuItem item = addMenuItem(restaurant1,"main", "Cheese Burger", "food", "Cheese burger with lettuce and tomatoes"
+            , 5.75);
+            addMenuItemRating(item, 5, "I Love it", rater);
+            
+            MenuItem item2 = addMenuItem(restaurant1,"main", "Chicken Burger", "food", 
+                    "Chicken burger with lettuce and tomatoes", 6.75);
+        //    addMenuItemRating(item2, 3, "Just alright", rater);
+            
+            MenuItem item3 = addMenuItem(restaurant1,"main", "Burger Combo", "food", 
+                    "Cheese Burger and fries", 8.75);
+       //     addMenuItemRating(item3, 5, "Was alright.", user);
+            
+            MenuItem item4 = addMenuItem(restaurant1,"main", "Coke", "drink", 
+                    "Coke", 1.75);
+         //   addMenuItemRating(item4, 4, "Typical drink", rater);
+        //    addMenuItemRating(item4, 1, "Was served water instead", user);
+            
+            MenuItem item5 = addMenuItem(restaurant1,"desert", "Ice Cream", "food", 
+                    "Strawberry Ice Cream. Yummy", 3.75);
+         //   addMenuItemRating(item5, 1, "Ew", rater);
+         //   addMenuItemRating(item5, 5, "loved it", user);
+            
+            MenuItem item6 = addMenuItem(restaurant2,"main", "Chicken", "food", "Hot Grilled Chicken"
+            , 8.75);
+            MenuItem item7 = addMenuItem(restaurant2,"main", "Beef Burger", "food", 
+                    "Hot grilled burger", 11.75);
+         //   addMenuItemRating(item7, 4, "Decent", rater);
+            
+            MenuItem item8 = addMenuItem(restaurant2,"side", "Fries", "food", 
+                    "baked fries", 3.75);
+        //    addMenuItemRating(item, 1, "Came for fries, got a baked potato...", rater);
+            
+            MenuItem item9 = addMenuItem(restaurant2,"main", "Orange juice", "drink", 
+                    "Orange juice", 1.65);
+            
+            MenuItem item10 = addMenuItem(restaurant4,"main", "Grilled halloumi", "food", "Cheese made from goat and sheep milk"
+            , 6.75);
+         //   addMenuItemRating(item10, 5, "Excellent", rater);
+            
+            MenuItem item11 = addMenuItem(restaurant4,"main", "Falafel", "food", 
+                    "fried chickpeas with herbs", 5.75);
+        //    addMenuItemRating(item11, 5, "No idea what I ate but it was great", user);
+            
+            MenuItem item12 = addMenuItem(restaurant4,"side", "Fattoush", "food", 
+                    "Salad with crispy lettus and crunchy squares of pita", 4.75);
+            
+            MenuItem item13 = addMenuItem(restaurant4,"main", "milk", "drink", 
+                    "Milk", 1.85);
+
+            MenuItem item14 = addMenuItem(restaurant5,"main", "Gobhi Aloo", "food", "Cauliflower with potatoes"
+            , 4.75);
+            MenuItem item15 = addMenuItem(restaurant5,"main", "Baati", "food", 
+                    "Wheat flour", 5.25);
+            MenuItem item16 = addMenuItem(restaurant5,"main", "Baigan bharta", "food", 
+                    "Eggplant cooked with tomatoes", 7.75);
+            MenuItem item17 = addMenuItem(restaurant5,"main", "Water", "drink", 
+                    "Water", 1.25);
+            
+            MenuItem item18 = addMenuItem(restaurant3,"main", "Noodle Soup", "food", "Soup"
+            , 4.75);
+        //    addMenuItemRating(item18, 2, "Wasn't satisfied.", rater);
+            
+            MenuItem item19 = addMenuItem(restaurant3,"main", "Chow mein", "food", 
+                    "Chow mein mix", 6.75);
+        //    addMenuItemRating(item19, 5, "Wasn't cooked properly", user);
+            
+            MenuItem item20 = addMenuItem(restaurant3,"main", "Fried Rice", "food", 
+                    "Rice mix", 3.75);
+            MenuItem item21 = addMenuItem(restaurant3,"main", "Water", "drink", 
+                    "Water", 1.25);
+         //   addMenuItemRating(item21, 5, "Best water I've ever had.", rater);
+            
             
             
             utx.commit();
@@ -115,13 +209,13 @@ public class TestDataServlet extends HttpServlet {
         account.setType("online");
         account.setJoindate(sqlDate);
 
-        Rater user = new Rater();
-        user.setReputation(1);
-        user.setUserAccount(account);
+        Rater user2 = new Rater();
+        user2.setReputation(1);
+        user2.setUserAccount(account);
 
         em.persist(account);
-        em.persist(user);
-        return user;
+        em.persist(user2);
+        return user2;
     }
     
     private void createRestaurants(Owner owner) {
@@ -152,15 +246,15 @@ public class TestDataServlet extends HttpServlet {
         em.persist(restaurant5);
     }
     
-    private Location addLocation(Owner owner, Restaurant restaurant) {
+    private Location addLocation(Owner owner, Restaurant restaurant, String address, String city, String postalcode, String province) {
         java.util.Calendar cal = Calendar.getInstance();
         java.sql.Date sqlDate = new java.sql.Date(cal.getTime().getTime());
         List<Location> ownerLocations = new ArrayList<Location>();
         Location location = new Location();
-        location.setStreetaddress("25 test drive");
-        location.setCity("Ottawa");
-        location.setPostalcode("A0A 0A0");
-        location.setProvince("ON");
+        location.setStreetaddress(address);
+        location.setCity(city);
+        location.setPostalcode(postalcode);
+        location.setProvince(province);
         location.setOpendate(sqlDate);
         location.setRestaurant(restaurant);
         location.setOwner(owner);
@@ -171,26 +265,26 @@ public class TestDataServlet extends HttpServlet {
         return location;
     }
     
-    private MenuItem addMenuItem(Restaurant restaurant){
+    private MenuItem addMenuItem(Restaurant restaurant, String category, String name, String type, String desc, double price){
         MenuItem item = new MenuItem();
-        item.setCategory("main");
-        item.setName("Cheese Burger");
-        item.setType("food");
-        item.setDescription("Cheese burger with lettuce and tomatoes");
-        item.setPrice(5.75);
+        item.setCategory(category);
+        item.setName(name);
+        item.setType(type);
+        item.setDescription(desc);
+        item.setPrice(price);
         item.setRestaurant(restaurant);
         em.persist(item);
         
         return item;
     }
     
-    private void addMenuItemRating(MenuItem menuItem, Rater rate){
+    private void addMenuItemRating(MenuItem menuItem, int rate1, String comment, Rater rate){  
         java.util.Calendar cal = Calendar.getInstance();
         java.sql.Date sqlDate = new java.sql.Date(cal.getTime().getTime());
         List<RatingItem> menuItemRatings = new ArrayList<RatingItem>();
         RatingItem rating = new RatingItem();
-        rating.setRating(3);
-        rating.setComments("test");
+        rating.setRating(rate1);
+        rating.setComments(comment);
         rating.setRater(rate);
         rating.setMenuitem(menuItem);
         rating.setVisitdate(sqlDate);
