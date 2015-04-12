@@ -18,6 +18,7 @@
                 <b:navLink value="View Restaurants" outcome="/view_restaurants"/>
                 <b:navLink value="View Raters" outcome="/view_rater"/>
                 <c:if test="#{sessionBean.owner}" >
+                    <b:navLink value="Add Restaurant" outcome="/owner/add_restaurant"/>
                     <b:navLink value="Add Location" outcome="/owner/add_location"/>
                     <b:navLink value="Add Menu Item" outcome="/owner/add_menuitem"/>
                 </c:if>

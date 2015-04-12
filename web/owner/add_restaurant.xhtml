@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <h:head>
+        <title>Restaurant DB Add Restaurant</title>
+        <meta name="CanJee" content="Can Jee"></meta>
+    </h:head>
+    <h:body>
+
+        <ui:composition template="./../template.xhtml">
+
+            <ui:define name="content">
+            <b:container>
+                <h:form styleClass="form-signin" prependId="false">
+                    <h2>Please enter the restaurant details</h2>
+                    <b:alert severity="danger" rendered="#{addRestaurantBean.isError}"><b:iconAwesome name="warning" />
+                        #{addRestaurantBean.status}
+                    </b:alert>
+                    <b:inputText id="restaurantname" placeholder="Restaurant Name" required="true" requiredMessage="Value is required" value="#{addRestaurantBean.name}"/>
+                    <h:message id="restaurantnameMsg" style="color: red" for="restaurant name" />
+                    <b:inputText id="type" placeholder="type" required="true" requiredMessage="Value is required" value="#{addRestaurantBean.type}"/>
+                    <h:message id="typeMsg" style="color: red" for="Type" />
+                    <b:inputText id="url" placeholder="url" required="true" requiredMessage="Value is required" value="#{addRestaurantBean.url}"/>
+                    <h:message id="urlMsg" style="color: red" for="Url" />
+                    <b:commandButton look="primary btn-block" value="Add Location" iconAwesome="sign-in" size="lg" actionListener="#{addRestaurantBean.addRestaurant}">
+                        <f:ajax execute="restaurantname type url" 
+                                render="status restaurantnameMsg typeMsg urlMsg" />
+                    </b:commandButton>
+                </h:form>
+            </b:container>
+        </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>

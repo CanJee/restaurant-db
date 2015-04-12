@@ -17,6 +17,17 @@ import models.UserAccount;
 @SessionScoped
 public class RestaurantFacade extends BaseFacade {
     
+    public boolean addRestaurant(Restaurant restaurant) {        
+        try {
+            utx.begin();
+            em.persist(restaurant);
+            utx.commit();
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+    
         public List<Restaurant> getRestaurantList(String orderBy, boolean ascending, EntityManager em) {
 
             String queryString = "SELECT r FROM Restaurant r";
