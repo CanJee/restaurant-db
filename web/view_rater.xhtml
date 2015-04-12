@@ -49,14 +49,6 @@
                             <h:outputText value="#{raters.totalNumberRating}"/>
                         </h:column>
                         <h:column>
-                            <f:facet name="header">Total Number of Restaurant Ratings</f:facet>
-                            <h:outputText value="#{raters.totalNumberRestaurantRating}"/>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">Total Number of Menu Item Ratings</f:facet>
-                            <h:outputText value="#{raters.totalNumberItemRating}"/>
-                        </h:column>
-                        <h:column>
                             <b:commandButton value="View Restaurant Ratings" look="primary" type="command" actionListener="#{viewRaterRatingBean.viewRaterRatings(raters)}"/>
                         </h:column>
                         <h:column>

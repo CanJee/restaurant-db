@@ -33,8 +33,6 @@ public class Rater extends User {
     @OneToMany(fetch=FetchType.EAGER)
     private List<RatingItem> itemratings;
     private int totalNumberRating;
-    private int totalNumberRestaurantRating;
-    private int totalNumberItemRating;
     @OneToMany(fetch=FetchType.EAGER)
     @JoinColumn(nullable = true)
     private List<Rating> likedRatings;
@@ -65,26 +63,9 @@ public class Rater extends User {
         this.likedRatingItems = likedRatingItems;
     }
     
-    public int getTotalNumberRestaurantRating() {
-        int total = ratings.size();
-        System.out.println(total);
-        return total;
-    }
-    public int getTotalNumberItemRating() {
-        int total = itemratings.size();
-        return total;
-    }
     public int getTotalNumberRating() {
         int total = ratings.size()+itemratings.size();
         return total;
-    }
-
-    public void setTotalNumberRestaurantRating(int totalNumberRestaurantRating) {
-        this.totalNumberRestaurantRating = totalNumberRestaurantRating;
-    }
-
-    public void setTotalNumberItemRating(int totalNumberItemRating) {
-        this.totalNumberItemRating = totalNumberItemRating;
     }
     
     public void setTotalNumberRating(int rating){
