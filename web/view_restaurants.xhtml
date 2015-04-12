@@ -55,6 +55,10 @@
                             <b:commandButton value="View Ratings" look="primary" type="command" actionListener="#{viewRestaurantRatingBean.viewRestaurantRatings(restaurant)}"/>
                         </h:column>
                      </h:dataTable>
+                    <br />
+                        <h:column>
+                            <b:commandButton value="View Restaurants by City" look="primary" type="command" actionListener="#{viewRestaurantByLocation.viewRestaurants()}"/>
+                        </h:column>
                 </h:form>
                 </f:view>
         </ui:define>

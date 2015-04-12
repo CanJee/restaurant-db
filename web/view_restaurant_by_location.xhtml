@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <h:head>
+        <title>View Restaurant Locations</title>
+        <meta name="CanJee" content="Can Jee"></meta>
+    </h:head>
+    <h:body>
+
+        <ui:composition template="./template2.xhtml">
+
+            <ui:define name="content">
+                <f:view>
+                    <h:form id="pagedResults" prependId="false" >
+                        <h2 class="form-signin-heading">Restaurants available</h2>
+                    <h:outputLabel id="orderByLabel" for="orderBy" value="Order By:" />
+                    <c:if test="#{viewRestaurantByLocation.locationCount == 0}">
+                            <h:outputText value="There are no restaurants to display." />
+                    </c:if>
+                    <c:if test="#{viewRestaurantByLocation.locationCount > 0}">
+                    <h:selectOneMenu id="city" class="form-control selectMenu" value="#{viewRestaurantByLocation.city}" valueChangeListener="#{viewRestaurantByLocation.cityChanged}">
+                        <c:forEach items="#{viewRestaurantByLocation.locations}" var="city">
+                        <f:selectItem itemValue="#{city}" itemLabel="#{city}" />
+                        </c:forEach>
+                        <f:ajax event="change" execute="@form" render="restaurant_location_table"/>
+                    </h:selectOneMenu>
+                    
+                    <h:selectOneMenu id="orderBy" class="form-control selectMenu" value="#{viewRestaurantByLocation.orderBy}" valueChangeListener="#{viewRestaurantByLocation.orderedByChanged}">
+                        <f:selectItem itemValue="name" itemLabel="Name" />
+                        <f:selectItem itemValue="address" itemLabel="Address" />
+                        <f:ajax event="change" execute="@form" render="restaurant_location_table"/>
+                    </h:selectOneMenu>
+                    
+                    <h:selectOneMenu id="ascending" class="form-control selectMenu" value="#{viewRestaurantByLocation.ascending}" valueChangeListener="#{viewRestaurantByLocation.ascendingChanged}">
+                        <f:selectItem itemValue="true" itemLabel="Ascending" />
+                        <f:selectItem itemValue="false" itemLabel="Descending" />
+                        <f:ajax event="change" execute="@form" render="restaurant_location_table"/>
+                    </h:selectOneMenu>
+                    
+                    <h:dataTable id="restaurant_location_table" cellpadding="10" value="#{viewRestaurantByLocation.resl}"
+                                  var="restaurant" border="1">
+                         <h:column>
+                            <f:facet name="header">Restaurant</f:facet>
+                            <h:outputText value="#{restaurant[0]}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Address</f:facet>
+                            <h:outputText value="#{restaurant[1]} #{restaurant[2]} #{restaurant[3]}"/>
+                        </h:column>
+                    </h:dataTable>
+                    </c:if>
+                </h:form>
+                </f:view>
+        </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

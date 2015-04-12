@@ -121,4 +121,19 @@ public class LocationFacade extends BaseFacade {
         return locations;
     }
     
+    public List<Location> getCityFromLocationList(String orderBy, boolean ascending, EntityManager em) {
+
+        String queryString = "SELECT l.city FROM Location l GROUP BY l.city";
+
+        Query query = em.createQuery(queryString);
+
+        List<Location> locations = performQueryList(Location.class, query);
+
+        if( locations == null ) {
+            locations = new ArrayList<Location>();
+        }
+
+        return locations;
+    }
+    
 }
