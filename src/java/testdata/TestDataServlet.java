@@ -56,7 +56,12 @@ public class TestDataServlet extends HttpServlet {
         try {
             utx.begin();
             
-            Owner owner = createOwner();
+            Owner owner = createOwner("owner@example.com", "owner", "Robert", "Paul", "test");
+            Owner owner2 = createOwner("owner2@example.com", "owner2", "Mangus", "Willith", "test");
+            Owner owner3 = createOwner("owner3@example.com", "owner3", "Marty", "Base", "test");
+            Owner owner4 = createOwner("owner4@example.com", "owner4", "Melissa", "Lambert", "test");
+            Owner owner5 = createOwner("owner5@example.com", "owner5", "Paul", "Johnson", "test");
+            
             Rater rater = createRater("rater@example.com", "rater", "John", "Doe", "test",4);
             Rater rater2 = createRater("rater2@example.com", "rater2", "Bob", "Doe", "test",13);
             Rater rater3 = createRater("rater3@example.com", "rater3", "Maria", "Charles", "test",500);
@@ -72,8 +77,6 @@ public class TestDataServlet extends HttpServlet {
             Rater rater13 = createRater("rater13@example.com", "rater13", "Robert", "Samuel", "test",5);
             Rater rater14 = createRater("rater14@example.com", "rater14", "Emma", "Vank", "test",11);
             Rater rater15 = createRater("rater15@example.com", "rater15", "Moore", "Jingson", "test",33);
-            
-            
             
             createRestaurants(owner);
             Location loc = addLocation(owner, restaurant1, "25 test drive", "Ottawa", "A0A 0A0", "ON" );
@@ -117,7 +120,7 @@ public class TestDataServlet extends HttpServlet {
             
             MenuItem item2 = addMenuItem(restaurant1,"main", "Chicken Burger", "food", 
                     "Chicken burger with lettuce and tomatoes", 6.75);
-        //    addMenuItemRating(item2, 3, "Just alright", rater2,2);
+         //   addMenuItemRating(item2, 3, "Just alright", rater2,2);
             
             MenuItem item3 = addMenuItem(restaurant1,"main", "Burger Combo", "food", 
                     "Cheese Burger and fries", 8.75);
@@ -271,15 +274,15 @@ public class TestDataServlet extends HttpServlet {
         }
     }
     
-    private Owner createOwner() {
+    private Owner createOwner(String email, String userName, String firstName, String lastName, String password) {
         java.util.Calendar cal = Calendar.getInstance();
         java.sql.Date sqlDate = new java.sql.Date(cal.getTime().getTime());
         UserAccount account = new UserAccount();
-        account.setEmail("owner@example.com");
-        account.setUsername("owner");
-        account.setFirstname("Owner1");
-        account.setLastname("Owner1");
-        setPassword(account, "test");
+        account.setEmail(email);
+        account.setUsername(userName);
+        account.setFirstname(firstName);
+        account.setLastname(lastName);
+        setPassword(account, password);
         account.setType("online");
         account.setJoindate(sqlDate);
 
@@ -408,7 +411,8 @@ public class TestDataServlet extends HttpServlet {
         return item;
     }
     
-    private void addMenuItemRating(MenuItem menuItem, int rate1, String comment, Rater rate, int likes){  
+    private void addMenuItemRating(MenuItem menuItem, int rate1, String comment, Rater rate, int likes){ 
+        
         java.util.Calendar cal = Calendar.getInstance();
         java.sql.Date sqlDate = new java.sql.Date(cal.getTime().getTime());
         List<RatingItem> menuItemRatings;
@@ -433,12 +437,12 @@ public class TestDataServlet extends HttpServlet {
         raterItemRatings.add(rating);
         menuItem.setRatings(menuItemRatings);
         rate.setItemratings(raterItemRatings);
-        em.persist(menuItem);
-        em.persist(rate);
+        em.merge(menuItem);
+        em.merge(rate);
         em.persist(rating);
     }
     
-    private void addLocationRating (Location location, Rater rate) {
+    private void addLocationRating (Location location, Rater rate) {        
         java.util.Calendar cal = Calendar.getInstance();
         java.sql.Date sqlDate = new java.sql.Date(cal.getTime().getTime());
         List<Rating> locationRatings = new ArrayList<Rating>();
