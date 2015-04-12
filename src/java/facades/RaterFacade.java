@@ -26,7 +26,7 @@ public class RaterFacade extends BaseFacade {
         if (orderBy.equals("name")) {
             queryString += "  ORDER BY r.userAccount.lastname ";
         } else if (orderBy.equals("reputation")){
-            queryString += "  ORDER BY r.totalNumberRating ";
+            queryString += "  ORDER BY r.reputation ";
         }
 
         if (ascending) {
